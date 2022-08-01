@@ -65,7 +65,7 @@ class HomeService {
     }
 
     class func getNearVenues(completion: @escaping Completion<[RecommendVenue]>) {
-        let nearParams = params.merging(addNearParams) { (_, _) in}
+        let nearParams = params.merging(addNearParams) { _, _ in }
         let urlString = Api.Path.baseURL
         api.request(method: .get, urlString: urlString, parameters: nearParams ) { result in
             switch result {
@@ -91,7 +91,7 @@ class HomeService {
 
     class func getOpenningVenues(limit: Int, completion: @escaping Completion<[RecommendVenue]>) {
         let abc = params.merging(addOpenningParams) { (current, _) in current }
-        let openningParams = abc.merging(["limit": "\(limit)"]) {_, _ in}
+        let openningParams = abc.merging(["limit": "\(limit)"]) { _, _ in }
         let urlString = Api.Path.baseURL
         api.request(method: .get, urlString: urlString, parameters: openningParams ) { result in
             switch result {

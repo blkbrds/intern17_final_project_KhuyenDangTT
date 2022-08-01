@@ -20,7 +20,9 @@ final class HomeViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupData()
+        setupDataRecommend()
+        setupDataNear()
+        setupDataOpenning()
         configUI()
         configUIRecommendTableView()
     }
@@ -48,27 +50,16 @@ final class HomeViewController: UIViewController {
         tableView.allowsSelection = false
     }
 
-    private func setupData() {
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        self.setupDataRecommend()
-        dispatchGroup.leave()
-        dispatchGroup.enter()
-        self.setupDataNear()
-        dispatchGroup.leave()
-        dispatchGroup.enter()
-        self.setupDataOpenning()
-        dispatchGroup.leave()
-    }
-
     private func setupDataRecommend() {
+        HUD.show()
         guard let viewModel = viewModel else { return }
         viewModel.getRecommendVenues { [weak self]result in
+            HUD.dismiss()
             guard let this = self else { return }
             switch result {
             case .success:
                 DispatchQueue.main.async {
-                    this.tableView.reloadData()
+                    this.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
                 }
             case .failure(let error):
                 this.alert(msg: error.localizedDescription, handler: nil)
@@ -77,13 +68,15 @@ final class HomeViewController: UIViewController {
     }
 
     private func setupDataNear() {
+        HUD.show()
         guard let viewModel = viewModel else { return }
         viewModel.getNearVenues { [weak self] result in
+            HUD.dismiss()
             guard let this = self else { return }
             switch result {
             case .success:
                 DispatchQueue.main.async {
-                    this.tableView.reloadData()
+                    this.tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .fade)
                 }
             case .failure(let error):
                 this.alert(msg: error.localizedDescription, handler: nil)
@@ -92,13 +85,15 @@ final class HomeViewController: UIViewController {
     }
 
     private func setupDataOpenning(limit: Int = 10) {
+        HUD.show()
         guard let viewModel = viewModel else { return }
         viewModel.getOpenningVenues(limit: limit ) { [weak self] result in
+            HUD.dismiss()
             guard let this = self else { return }
             switch result {
             case .success:
                 DispatchQueue.main.async {
-                    this.tableView.reloadData()
+                    this.tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .fade)
                 }
             case .failure(let error):
                 this.alert(msg: error.localizedDescription, handler: nil)
