@@ -13,20 +13,18 @@ final class HomeViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var tableView: UITableView!
-    
+
     // MARK: - Properties
     var viewModel: HomeViewModel?
 
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupDataRecommend()
-        setupDataNear()
-        setupDataOpenning()
+        setupData()
         configUI()
         configUIRecommendTableView()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -50,11 +48,22 @@ final class HomeViewController: UIViewController {
         tableView.allowsSelection = false
     }
 
+    private func setupData() {
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        self.setupDataRecommend()
+        dispatchGroup.leave()
+        dispatchGroup.enter()
+        self.setupDataNear()
+        dispatchGroup.leave()
+        dispatchGroup.enter()
+        self.setupDataOpenning()
+        dispatchGroup.leave()
+    }
+
     private func setupDataRecommend() {
-        HUD.show()
         guard let viewModel = viewModel else { return }
         viewModel.getRecommendVenues { [weak self]result in
-            HUD.dismiss()
             guard let this = self else { return }
             switch result {
             case .success:
@@ -83,10 +92,8 @@ final class HomeViewController: UIViewController {
     }
 
     private func setupDataOpenning(limit: Int = 10) {
-        HUD.show()
         guard let viewModel = viewModel else { return }
         viewModel.getOpenningVenues(limit: limit ) { [weak self] result in
-            HUD.dismiss()
             guard let this = self else { return }
             switch result {
             case .success:

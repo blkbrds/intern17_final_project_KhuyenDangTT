@@ -16,6 +16,7 @@ final class OpeningTableViewCell: UITableViewCell {
 
     // MARK: - Enum
     enum Action {
+
         case loadMore
     }
     // MARK: - IBOulets

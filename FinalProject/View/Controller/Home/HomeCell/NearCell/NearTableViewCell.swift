@@ -65,15 +65,6 @@ extension NearTableViewCell: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - UICollectionViewDelegate
-extension NearTableViewCell: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == ((viewModel?.nearVenues.count ?? 0) - 3) {
-            print("bbbb")
-        }
-    }
-}
-
 // MARK: - RecommendTableViewCell
 extension NearTableViewCell {
     struct Config {

@@ -55,8 +55,9 @@ class HomeService {
                         venue.image = randomImage()
                     }
                     completion(.success(recommendVenue))
-
-                } else { return }
+                } else {
+                    completion(.failure(Api.Error.json))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -79,8 +80,9 @@ class HomeService {
                         venue.image = randomImage()
                     }
                     completion(.success(recommendVenue))
-
-                } else { return }
+                } else {
+                    completion(.failure(Api.Error.json))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -104,8 +106,9 @@ class HomeService {
                         venue.image = randomImage()
                     }
                     completion(.success(recommendVenue))
-
-                } else { return }
+                } else {
+                    completion(.failure(Api.Error.json))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
