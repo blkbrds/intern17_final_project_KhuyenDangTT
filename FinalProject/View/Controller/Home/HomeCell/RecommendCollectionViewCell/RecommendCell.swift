@@ -38,7 +38,7 @@ final class RecommendCell: UICollectionViewCell {
         photoImageView.image = UIImage(named: viewModel.recommendVenue.image)
     }
 }
-// MARK: - RecommendCell
+// MARK: - Config
 extension RecommendCell {
 
     struct Config {

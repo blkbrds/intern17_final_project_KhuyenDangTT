@@ -30,6 +30,7 @@ final class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        tabBarController?.tabBar.isHidden = false
     }
 
     // MARK: - Private func
@@ -121,10 +122,12 @@ extension HomeViewController: UITableViewDataSource {
         case .recommend:
             let recommendCell = tableView.dequeue(RecommendTableViewCell.self)
             recommendCell.viewModel = viewModel?.viewModelForRecommend()
+            recommendCell.delegate = self
             return recommendCell
         case .near:
             let nearCell = tableView.dequeue(NearTableViewCell.self)
             nearCell.viewModel = viewModel?.viewModelForNear()
+            nearCell.delegate = self
             return nearCell
         case .openning:
             let openningCell = tableView.dequeue(OpeningTableViewCell.self)
@@ -151,17 +154,43 @@ extension HomeViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+
 // MARK: - OpeningTableViewCellDelegate
 extension HomeViewController: OpeningTableViewCellDelegate {
     func cell(_ cell: OpeningTableViewCell, needPerformAction action: OpeningTableViewCell.Action) {
         switch action {
         case .loadMore:
             setupDataOpenning(limit: 20)
+        case .showDetail:
+            let detailVC = DetailViewController()
+            navigationController?.pushViewController(detailVC, animated: true)
         }
     }
 }
 
-// MARK: - HomeViewController
+// MARK: - RecommendTableViewCellDelegate
+extension HomeViewController: RecommendTableViewCellDelegate {
+    func cell(_ cell: RecommendTableViewCell, needPerformAction action: RecommendTableViewCell.Action) {
+        switch action {
+        case .showDetail:
+            let detailVC = DetailViewController()
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
+    }
+}
+
+// MARK: - NearTableViewCellDelegate
+extension HomeViewController: NearTableViewCellDelegate {
+    func cell(_ cell: NearTableViewCell, needPerformAction action: NearTableViewCell.Action) {
+        switch action {
+        case .showDetail:
+            let detailVC = DetailViewController()
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
+    }
+}
+
+// MARK: - Config
 extension HomeViewController {
 
     struct Config {
