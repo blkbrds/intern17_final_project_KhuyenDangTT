@@ -8,4 +8,10 @@
 
 import Foundation
 final class DetailCellViewModel {
+
+    var photoItem: PhotoItem?
+
+    init(photoItem: PhotoItem) {
+        self.photoItem = photoItem
+    }
 }

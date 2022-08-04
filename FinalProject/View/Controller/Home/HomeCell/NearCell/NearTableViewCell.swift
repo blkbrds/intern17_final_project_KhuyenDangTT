@@ -16,8 +16,7 @@ final class NearTableViewCell: UITableViewCell {
 
     // MARK: - Enum
     enum Action {
-
-        case showDetail
+        case showDetail(id: String)
     }
 
     // MARK: - IBOutlets
@@ -79,11 +78,12 @@ extension NearTableViewCell: UICollectionViewDelegateFlowLayout {
 // MARK: - UICollectionViewDelegate
 extension NearTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.cell(self, needPerformAction: .showDetail)
+        delegate?.cell(self, needPerformAction: .showDetail(id:viewModel?.viewModelForItem(at: indexPath).recommendVenue.venue?.id ?? "" ))
     }
 }
 // MARK: - Config
 extension NearTableViewCell {
+
     struct Config {
         static let minimumLineSpacingForSection: CGFloat = 20
         static let widthOfItem: CGFloat = (UIScreen.main.bounds.width - 40) / 2.5

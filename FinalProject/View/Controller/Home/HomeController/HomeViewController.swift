@@ -8,7 +8,17 @@
 
 import UIKit
 
+// MARK: - Protocol
+protocol HomeViewControllerDelegate: AnyObject {
+    func controller(_ controller: HomeViewController, needPerformAction action: HomeViewController.Action )
+}
+
 final class HomeViewController: UIViewController {
+
+    // MARK: - Enum
+    enum Action {
+        case passIdDetail(id: String)
+    }
     
     // MARK: - IBOutlets
     @IBOutlet private weak var avatarImageView: UIImageView!
@@ -16,7 +26,7 @@ final class HomeViewController: UIViewController {
 
     // MARK: - Properties
     var viewModel: HomeViewModel?
-
+    weak var delegate: HomeViewControllerDelegate?
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,13 +64,13 @@ final class HomeViewController: UIViewController {
     private func setupDataRecommend() {
         HUD.show()
         guard let viewModel = viewModel else { return }
-        viewModel.getRecommendVenues { [weak self]result in
+        viewModel.getRecommendVenues { [weak self] result in
             HUD.dismiss()
             guard let this = self else { return }
             switch result {
             case .success:
                 DispatchQueue.main.async {
-                    this.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                    this.tableView.reloadRows(at: [IndexPath(row: TypeRow.recommend.rawValue, section: Config.section)], with: .fade)
                 }
             case .failure(let error):
                 this.alert(msg: error.localizedDescription, handler: nil)
@@ -77,7 +87,7 @@ final class HomeViewController: UIViewController {
             switch result {
             case .success:
                 DispatchQueue.main.async {
-                    this.tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .fade)
+                    this.tableView.reloadRows(at: [IndexPath(row: TypeRow.near.rawValue, section: Config.section)], with: .fade)
                 }
             case .failure(let error):
                 this.alert(msg: error.localizedDescription, handler: nil)
@@ -94,7 +104,7 @@ final class HomeViewController: UIViewController {
             switch result {
             case .success:
                 DispatchQueue.main.async {
-                    this.tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .fade)
+                    this.tableView.reloadRows(at: [IndexPath(row: TypeRow.openning.rawValue, section: Config.section)], with: .fade)
                 }
             case .failure(let error):
                 this.alert(msg: error.localizedDescription, handler: nil)
@@ -115,7 +125,7 @@ extension HomeViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let type = HomeViewModel.TypeRow(rawValue: indexPath.row) else {
+        guard let type = TypeRow(rawValue: indexPath.row) else {
             return UITableViewCell()
         }
         switch type {
@@ -161,8 +171,9 @@ extension HomeViewController: OpeningTableViewCellDelegate {
         switch action {
         case .loadMore:
             setupDataOpenning(limit: 20)
-        case .showDetail:
+        case .showDetail(let id):
             let detailVC = DetailViewController()
+            detailVC.viewModel = DetailViewModel(id: id)
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
@@ -172,8 +183,9 @@ extension HomeViewController: OpeningTableViewCellDelegate {
 extension HomeViewController: RecommendTableViewCellDelegate {
     func cell(_ cell: RecommendTableViewCell, needPerformAction action: RecommendTableViewCell.Action) {
         switch action {
-        case .showDetail:
+        case .showDetail(let id):
             let detailVC = DetailViewController()
+            detailVC.viewModel = DetailViewModel(id: id)
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
@@ -183,8 +195,9 @@ extension HomeViewController: RecommendTableViewCellDelegate {
 extension HomeViewController: NearTableViewCellDelegate {
     func cell(_ cell: NearTableViewCell, needPerformAction action: NearTableViewCell.Action) {
         switch action {
-        case .showDetail:
+        case .showDetail(let id):
             let detailVC = DetailViewController()
+            detailVC.viewModel = DetailViewModel(id: id)
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
@@ -197,5 +210,6 @@ extension HomeViewController {
         static let borderWidthOfAvatarImage: CGFloat = 2
         static let borderColorOfAvatarImage = UIColor.orange.cgColor
         static let avatarImage = "user_female"
+        static let section: Int = 0
     }
 }

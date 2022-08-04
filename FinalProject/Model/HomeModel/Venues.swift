@@ -8,16 +8,13 @@
 
 import ObjectMapper
 
-class Venues: Mappable {
+final class Venues: Mappable {
     
     var location: Location?
     var id: String?
     var name: String?
 
-    required init?(map: Map) {
-    }
-
-    init() { }
+    required init?(map: Map) { }
 
     func mapping(map: Map) {
         location <- map["location"]

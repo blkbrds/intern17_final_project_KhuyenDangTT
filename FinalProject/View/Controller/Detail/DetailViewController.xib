@@ -13,6 +13,11 @@
             <connections>
                 <outlet property="collectionView" destination="eJu-C4-F2C" id="Yhf-my-ESA"/>
                 <outlet property="detailView" destination="QD2-Ef-gtG" id="uzw-YK-aPz"/>
+                <outlet property="favoriteButton" destination="S5b-vs-P4S" id="mP8-d8-UZB"/>
+                <outlet property="likeLabel" destination="AED-lD-SYK" id="0ev-e7-CfL"/>
+                <outlet property="nameLabel" destination="wd1-0J-pFk" id="v3q-0c-lqn"/>
+                <outlet property="priceLabel" destination="5pd-Ps-lSd" id="fel-bt-vbB"/>
+                <outlet property="ratingLabel" destination="mSV-rn-xod" id="a5g-tF-ohr"/>
                 <outlet property="seeMapButton" destination="egE-gQ-kCC" id="i5O-aK-cY3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outletCollection property="starImageView" destination="ehp-ge-Ul5" collectionClass="NSMutableArray" id="Njr-2g-AMF"/>
@@ -197,6 +202,23 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5b-vs-P4S">
+                            <rect key="frame" x="349" y="25" width="40" height="40"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="cAt-nx-AiM"/>
+                                <constraint firstAttribute="width" constant="40" id="pSK-3W-P2d"/>
+                            </constraints>
+                            <state key="normal" image="favorited"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="20"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="favoriteButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="zUq-Wd-c2R"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.37293879871422742" green="0.57705425126903553" blue="0.36523916701501913" alpha="0.8982234589041096" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -210,6 +232,7 @@
                         <constraint firstItem="sgZ-33-qgf" firstAttribute="centerX" secondItem="QD2-Ef-gtG" secondAttribute="centerX" id="JdS-FX-e32"/>
                         <constraint firstItem="AED-lD-SYK" firstAttribute="leading" secondItem="QD2-Ef-gtG" secondAttribute="leading" constant="20" id="KT2-vb-6EK"/>
                         <constraint firstItem="mSV-rn-xod" firstAttribute="leading" secondItem="0cg-eb-zjO" secondAttribute="trailing" constant="18" id="QVI-US-5IE"/>
+                        <constraint firstItem="S5b-vs-P4S" firstAttribute="top" secondItem="QD2-Ef-gtG" secondAttribute="top" constant="25" id="RfH-Hw-F41"/>
                         <constraint firstItem="egE-gQ-kCC" firstAttribute="top" secondItem="YV9-eD-xwh" secondAttribute="bottom" constant="5" id="UCT-dI-AQP"/>
                         <constraint firstItem="YV9-eD-xwh" firstAttribute="top" secondItem="0cg-eb-zjO" secondAttribute="bottom" constant="18.5" id="Wcl-bA-pAQ"/>
                         <constraint firstItem="0cg-eb-zjO" firstAttribute="top" secondItem="wd1-0J-pFk" secondAttribute="bottom" constant="5" id="Xky-Q2-vpC"/>
@@ -219,6 +242,7 @@
                         <constraint firstAttribute="trailing" secondItem="5pd-Ps-lSd" secondAttribute="trailing" constant="20" id="j9J-sa-Hcw"/>
                         <constraint firstItem="YLl-lZ-X3L" firstAttribute="top" secondItem="AED-lD-SYK" secondAttribute="bottom" constant="25" id="oKk-mN-EAL"/>
                         <constraint firstItem="egE-gQ-kCC" firstAttribute="leading" secondItem="QD2-Ef-gtG" secondAttribute="leading" constant="20" id="tcF-i8-V4c"/>
+                        <constraint firstAttribute="trailing" secondItem="S5b-vs-P4S" secondAttribute="trailing" constant="25" id="tt0-gC-Ogf"/>
                         <constraint firstItem="YLl-lZ-X3L" firstAttribute="leading" secondItem="QD2-Ef-gtG" secondAttribute="leading" constant="20" id="vJ5-YX-WYh"/>
                         <constraint firstAttribute="trailing" secondItem="YLl-lZ-X3L" secondAttribute="trailing" constant="20" id="w4c-Tv-Ube"/>
                         <constraint firstItem="AED-lD-SYK" firstAttribute="top" secondItem="5pd-Ps-lSd" secondAttribute="bottom" id="wSh-8z-aWv"/>
@@ -248,6 +272,7 @@
         <image name="book" width="50" height="50"/>
         <image name="cafe" width="32" height="32"/>
         <image name="cake" width="32" height="32"/>
+        <image name="favorited" width="24" height="24"/>
         <image name="horizontal_line" width="96" height="96"/>
         <image name="star_fill" width="48" height="48"/>
         <image name="toy" width="62" height="62"/>

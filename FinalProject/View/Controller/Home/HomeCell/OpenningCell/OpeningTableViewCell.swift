@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol OpeningTableViewCellDelegate: AnyObject  {
+// MARK: - Protocol
+protocol OpeningTableViewCellDelegate: AnyObject {
     func cell(_ cell: OpeningTableViewCell, needPerformAction action: OpeningTableViewCell.Action )
 }
 
@@ -16,10 +17,10 @@ final class OpeningTableViewCell: UITableViewCell {
 
     // MARK: - Enum
     enum Action {
-
         case loadMore
-        case showDetail
+        case showDetail(id: String)
     }
+
     // MARK: - IBOulets
     @IBOutlet private weak var collectionView: UICollectionView!
 
@@ -90,7 +91,7 @@ extension OpeningTableViewCell: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.cell(self, needPerformAction: .showDetail)
+        delegate?.cell(self, needPerformAction: .showDetail(id: viewModel?.viewModelForItem(at: indexPath).recommendVenue.venue?.id ?? ""))
     }
 }
 

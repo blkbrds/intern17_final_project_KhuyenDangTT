@@ -9,15 +9,9 @@
 import Alamofire
 import ObjectMapper
 
-class HomeService {
+final class HomeService {
 
-    struct HomeParam {
-        static let clientID = "PQXVYOXN4R55FNHKV05EUIF5OR4GZU4F2ITMOGIW3ZA1CKCZ"
-        static let clientSecret = "JEG0HJKBHZNL4ADKBSMRVBFDDFVZWSFCTQ2P2A3UDQXAFAIK"
-        static let version = "20211118"
-        static let query = "coffee"
-    }
-
+    // MARK: - Properties
     static let params: JSObject = [
         "client_id": HomeParam.clientID,
         "client_secret": HomeParam.clientSecret,
@@ -39,6 +33,7 @@ class HomeService {
         "openNow": "true"
     ]
 
+    // MARK: - Class func
     class func getRecommendVenues(completion: @escaping Completion<[RecommendVenue]>) {
         let recommendParams = params.merging(addRecommendParams) { _, _ in }
         let urlString = Api.Path.baseURL
@@ -90,8 +85,8 @@ class HomeService {
     }
 
     class func getOpenningVenues(limit: Int, completion: @escaping Completion<[RecommendVenue]>) {
-        let abc = params.merging(addOpenningParams) { (current, _) in current }
-        let openningParams = abc.merging(["limit": "\(limit)"]) { _, _ in }
+        let openningVenueParams = params.merging(addOpenningParams) { _, _ in }
+        let openningParams = openningVenueParams.merging(["limit": "\(limit)"]) { _, _ in }
         let urlString = Api.Path.baseURL
         api.request(method: .get, urlString: urlString, parameters: openningParams ) { result in
             switch result {
@@ -115,8 +110,20 @@ class HomeService {
         }
     }
 
-    class func randomImage() -> String {
+    // MARK: - class private func
+    class private func randomImage() -> String {
         let index = Int.random(min: 1, max: 13)
         return "coffee\(index)"
+    }
+}
+
+// MARK: - Define
+extension HomeService {
+
+    struct HomeParam {
+        static let clientID = "PQXVYOXN4R55FNHKV05EUIF5OR4GZU4F2ITMOGIW3ZA1CKCZ"
+        static let clientSecret = "JEG0HJKBHZNL4ADKBSMRVBFDDFVZWSFCTQ2P2A3UDQXAFAIK"
+        static let version = "20211118"
+        static let query = "coffee"
     }
 }

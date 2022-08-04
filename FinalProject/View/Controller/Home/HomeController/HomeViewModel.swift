@@ -8,30 +8,30 @@
 
 import Foundation
 
-final class HomeViewModel {
+// MARK: - Enum
+enum TypeRow: Int, CaseIterable {
+    case recommend = 0
+    case near
+    case openning
 
-    // MARK: - Enum
-    enum TypeRow: Int, CaseIterable {
-        case recommend = 0
-        case near
-        case openning
-
-        var title: String {
-            switch self {
-            case .recommend:
-                return "Recommend"
-            case .near:
-                return "Nearly"
-            case .openning:
-                return "Openning"
-            }
+    var title: String {
+        switch self {
+        case .recommend:
+            return "Recommend"
+        case .near:
+            return "Nearly"
+        case .openning:
+            return "Openning"
         }
     }
+}
+
+final class HomeViewModel {
 
     // MARK: - Properties
     private var recommendVenues: [RecommendVenue] = []
     private var nearVenues: [RecommendVenue] = []
-    private (set) var openningVenues: [RecommendVenue] = []
+    private var openningVenues: [RecommendVenue] = []
 
     // MARK: - Public func
     func numberOfRowInSection() -> Int {
@@ -102,11 +102,15 @@ final class HomeViewModel {
     func viewModelForOpenning() -> OpenningViewModel {
         return OpenningViewModel(openningVenues: openningVenues)
     }
+
+    func viewModelForDetail(at indexPath: IndexPath) -> DetailViewModel {
+        return DetailViewModel(id: recommendVenues[indexPath.row].venue?.id ?? "")
+    }
 }
 
 // MARK: - HomeViewModel
 extension HomeViewModel {
-    
+
     struct Config {
         static let heightRowOfRecommend: Float = 210
         static let heightRowOfNear: Float = 200

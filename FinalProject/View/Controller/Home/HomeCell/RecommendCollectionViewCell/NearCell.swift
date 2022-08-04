@@ -40,6 +40,7 @@ final class NearCell: UICollectionViewCell {
 
 // MARK: - Config
 extension NearCell {
+
     struct Config {
         static let cornerRadius: CGFloat = 15
     }

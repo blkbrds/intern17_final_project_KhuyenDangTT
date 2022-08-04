@@ -11,7 +11,7 @@ import Foundation
 final class NearViewModel {
     
     // MARK: - Properties
-    private (set) var nearVenues: [RecommendVenue] = []
+    private var nearVenues: [RecommendVenue] = []
 
     // MARK: - Init
     init(nearVenues: [RecommendVenue]) {

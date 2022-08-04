@@ -10,7 +10,7 @@ import Foundation
 final class OpenningViewModel {
 
     // MARK: - Properties
-    private (set) var openningVenues: [RecommendVenue] = []
+    private var openningVenues: [RecommendVenue] = []
 
     // MARK: - Init
     init(openningVenues: [RecommendVenue]) {
@@ -26,6 +26,7 @@ final class OpenningViewModel {
         guard indexPath.row < openningVenues.count else { return false }
         return indexPath.row == openningVenues.count - 1
     }
+
     func viewModelForItem(at indexPath: IndexPath) -> RecommendViewModel {
         return RecommendViewModel(recommendVenue: openningVenues[indexPath.row])
     }

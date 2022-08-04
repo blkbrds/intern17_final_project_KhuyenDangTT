@@ -14,6 +14,13 @@ final class DetailCell: UICollectionViewCell {
     @IBOutlet private weak var detailImageView: UIImageView!
     @IBOutlet private weak var containerView: UIView!
 
+    // MARK: - Properties
+    var viewModel: DetailCellViewModel? {
+        didSet {
+            updateCell()
+        }
+    }
+
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,19 +31,11 @@ final class DetailCell: UICollectionViewCell {
     // MARK: - Private func
     private func setupUI() {
         detailImageView.layer.cornerRadius = 20
-        //        makeShadowCell()
     }
 
     private func updateCell() {
-        detailImageView.image = UIImage(named: "coffee3")
-    }
-
-    private func makeShadowCell() {
-        let shadowPath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: DetailViewController.Config.widthOfItem, height: DetailViewController.Config.heightOfItem))
-        self.containerView.layer.masksToBounds = false
-        self.containerView.layer.shadowColor = UIColor.gray.cgColor
-        self.containerView.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
-        self.containerView.layer.shadowOpacity = 0.7
-        self.containerView.layer.shadowPath = shadowPath.cgPath
+        detailImageView.downloadImage(with: viewModel?.photoItem?.URLImage ?? "") { image in
+            self.detailImageView.image = image
+        }
     }
 }
