@@ -53,7 +53,7 @@ final class HomeViewModel {
     }
 
     func getRecommendVenues(completion: @escaping APICompletion) {
-        HomeService.shared.getRecommendVenues { [weak self] result in
+        HomeService.shared().getRecommendVenues { [weak self] result in
             guard let this = self else { return }
             switch result {
             case .success(let recommendVenues):
@@ -66,7 +66,7 @@ final class HomeViewModel {
     }
 
     func getNearVenues(completion: @escaping APICompletion) {
-        HomeService.shared.getNearVenues { [weak self] result in
+        HomeService.shared().getNearVenues { [weak self] result in
             guard let this = self else { return }
             switch result {
             case .success(let nearVenues):
@@ -79,7 +79,7 @@ final class HomeViewModel {
     }
 
     func getOpenningVenues(limit: Int, completion: @escaping APICompletion) {
-        HomeService.shared.getOpenningVenues(limit: limit) { [weak self] result in
+        HomeService.shared().getOpenningVenues(limit: limit) { [weak self] result in
             guard let this = self else { return }
             switch result {
             case .success(let openningVenues):

@@ -12,7 +12,10 @@ import ObjectMapper
 class HomeService {
 
     // MARK: - Properties
-    static let shared = HomeService()
+    static var shareInstance: HomeService {
+        let shareHomeService = HomeService()
+        return shareHomeService
+    }
     let params: JSObject = [
         "client_id": HomeParam.clientID,
         "client_secret": HomeParam.clientSecret,
@@ -21,20 +24,22 @@ class HomeService {
 
     let addRecommendParams: JSObject = [
         "ll": "16.069954,108.218844",
-        "limit": "10"
-    ]
+        "limit": "10"]
 
     let addNearParams: JSObject = [
         "near": "Viet Nam, Da Nang",
-        "limit": "10"
-    ]
+        "limit": "10"]
 
     let addOpenningParams: JSObject = [
         "near": "Viet Nam, Da Nang",
-        "openNow": "true"
-    ]
+        "openNow": "true"]
 
     // MARK: - Class func
+    class func shared() -> HomeService {
+        return shareInstance
+    }
+    
+    // MARK: - Public func
      func getRecommendVenues(completion: @escaping Completion<[RecommendVenue]>) {
         let recommendParams = params.merging(addRecommendParams) { _, _ in }
         let urlString = Api.Path.baseURL

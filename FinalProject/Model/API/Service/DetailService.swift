@@ -12,14 +12,24 @@ import ObjectMapper
 class DetailService {
 
     // MARK: - Properties
-    static let shared = DetailService()
-     let params: JSObject = [
+    static var sharedInstance: DetailService {
+        let shareDetailService = DetailService()
+        return shareDetailService
+    }
+    let params: JSObject = [
         "client_id": HomeService.HomeParam.clientID,
         "client_secret": HomeService.HomeParam.clientSecret,
-        "v": HomeService.HomeParam.version
-    ]
+        "v": HomeService.HomeParam.version ]
 
     // MARK: - Class func
+    class func shared() -> DetailService {
+        return sharedInstance
+    }
+    
+    // MARK: - Private init()
+    private init() {}
+    
+    // MARK: - Public func
     func getDetailVenueById(id: String, completion: @escaping Completion<DetailVenue>) {
         let urlString = "https://api.foursquare.com/v2/venues/" + id
         api.request(method: .get, urlString: urlString, parameters: params) { result in

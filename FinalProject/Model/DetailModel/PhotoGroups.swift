@@ -9,11 +9,11 @@
 import ObjectMapper
 
 final class PhotoGroups: Mappable {
-    
+
     var items: [PhotoItem]?
 
     required init?(map: Map) { }
-    
+
     func mapping(map: Map) {
         items <- map["items"]
     }
