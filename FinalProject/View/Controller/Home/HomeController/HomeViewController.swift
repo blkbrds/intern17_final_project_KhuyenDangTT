@@ -19,7 +19,7 @@ final class HomeViewController: UIViewController {
     enum Action {
         case passIdDetail(id: String)
     }
-    
+
     // MARK: - IBOutlets
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var tableView: UITableView!

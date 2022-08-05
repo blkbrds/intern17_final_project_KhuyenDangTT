@@ -9,32 +9,33 @@
 import Alamofire
 import ObjectMapper
 
-final class HomeService {
+class HomeService {
 
     // MARK: - Properties
-    static let params: JSObject = [
+    static let shared = HomeService()
+    let params: JSObject = [
         "client_id": HomeParam.clientID,
         "client_secret": HomeParam.clientSecret,
         "v": HomeParam.version,
         "query": HomeParam.query]
 
-    static let addRecommendParams: JSObject = [
+    let addRecommendParams: JSObject = [
         "ll": "16.069954,108.218844",
         "limit": "10"
     ]
 
-    static let addNearParams: JSObject = [
+    let addNearParams: JSObject = [
         "near": "Viet Nam, Da Nang",
         "limit": "10"
     ]
 
-    static let addOpenningParams: JSObject = [
+    let addOpenningParams: JSObject = [
         "near": "Viet Nam, Da Nang",
         "openNow": "true"
     ]
 
     // MARK: - Class func
-    class func getRecommendVenues(completion: @escaping Completion<[RecommendVenue]>) {
+     func getRecommendVenues(completion: @escaping Completion<[RecommendVenue]>) {
         let recommendParams = params.merging(addRecommendParams) { _, _ in }
         let urlString = Api.Path.baseURL
         api.request(method: .get, urlString: urlString, parameters: recommendParams ) { result in
@@ -47,7 +48,7 @@ final class HomeService {
                     guard let items = groups.first?["items"] as? JSArray else { return }
                         recommendVenue = Mapper<RecommendVenue>().mapArray(JSONArray: items)
                     for venue in recommendVenue {
-                        venue.image = randomImage()
+                        venue.image = self.randomImage()
                     }
                     completion(.success(recommendVenue))
                 } else {
@@ -59,7 +60,7 @@ final class HomeService {
         }
     }
 
-    class func getNearVenues(completion: @escaping Completion<[RecommendVenue]>) {
+     func getNearVenues(completion: @escaping Completion<[RecommendVenue]>) {
         let nearParams = params.merging(addNearParams) { _, _ in }
         let urlString = Api.Path.baseURL
         api.request(method: .get, urlString: urlString, parameters: nearParams ) { result in
@@ -72,7 +73,7 @@ final class HomeService {
                         guard let items = groups.first?["items"] as? JSArray else { return }
                         recommendVenue = Mapper<RecommendVenue>().mapArray(JSONArray: items)
                     for venue in recommendVenue {
-                        venue.image = randomImage()
+                        venue.image = self.randomImage()
                     }
                     completion(.success(recommendVenue))
                 } else {
@@ -84,7 +85,7 @@ final class HomeService {
         }
     }
 
-    class func getOpenningVenues(limit: Int, completion: @escaping Completion<[RecommendVenue]>) {
+     func getOpenningVenues(limit: Int, completion: @escaping Completion<[RecommendVenue]>) {
         let openningVenueParams = params.merging(addOpenningParams) { _, _ in }
         let openningParams = openningVenueParams.merging(["limit": "\(limit)"]) { _, _ in }
         let urlString = Api.Path.baseURL
@@ -98,7 +99,7 @@ final class HomeService {
                     guard let items = groups.first?["items"] as? JSArray else { return }
                         recommendVenue = Mapper<RecommendVenue>().mapArray(JSONArray: items)
                     for venue in recommendVenue {
-                        venue.image = randomImage()
+                        venue.image = self.randomImage()
                     }
                     completion(.success(recommendVenue))
                 } else {
@@ -110,8 +111,8 @@ final class HomeService {
         }
     }
 
-    // MARK: - class private func
-    class private func randomImage() -> String {
+    // MARK: - Private func
+    private func randomImage() -> String {
         let index = Int.random(min: 1, max: 13)
         return "coffee\(index)"
     }

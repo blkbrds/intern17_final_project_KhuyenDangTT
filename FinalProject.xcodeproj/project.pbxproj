@@ -67,6 +67,7 @@
 		8A90CD8A288E83E700EDFB01 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A90CD88288E83E700EDFB01 /* SearchViewController.xib */; };
 		8A90CD93288E842000EDFB01 /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90CD91288E842000EDFB01 /* FavoriteViewController.swift */; };
 		8A90CD94288E842000EDFB01 /* FavoriteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A90CD92288E842000EDFB01 /* FavoriteViewController.xib */; };
+		8A9922F9289CABA200CC1F9E /* Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9922F8289CABA200CC1F9E /* Realm.swift */; };
 		8A9AC277289A26B000EFA680 /* DetailVenue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9AC276289A26B000EFA680 /* DetailVenue.swift */; };
 		8A9AC27D289A26EA00EFA680 /* DetailLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9AC27C289A26EA00EFA680 /* DetailLocation.swift */; };
 		8A9AC281289A27AD00EFA680 /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9AC280289A27AD00EFA680 /* Price.swift */; };
@@ -154,6 +155,7 @@
 		8A90CD88288E83E700EDFB01 /* SearchViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
 		8A90CD91288E842000EDFB01 /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
 		8A90CD92288E842000EDFB01 /* FavoriteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoriteViewController.xib; sourceTree = "<group>"; };
+		8A9922F8289CABA200CC1F9E /* Realm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Realm.swift; sourceTree = "<group>"; };
 		8A9AC276289A26B000EFA680 /* DetailVenue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVenue.swift; sourceTree = "<group>"; };
 		8A9AC27C289A26EA00EFA680 /* DetailLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailLocation.swift; sourceTree = "<group>"; };
 		8A9AC280289A27AD00EFA680 /* Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 		6AF60D232313B56B00F5CBA2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8AC39132289BD4A400D51677 /* Realm Model */,
 				8A9AC275289A256400EFA680 /* DetailModel */,
 				8A9AC274289A254E00EFA680 /* HomeModel */,
 				6AF60D242313B56B00F5CBA2 /* Session.swift */,
@@ -499,6 +502,14 @@
 			path = DetailModel;
 			sourceTree = "<group>";
 		};
+		8AC39132289BD4A400D51677 /* Realm Model */ = {
+			isa = PBXGroup;
+			children = (
+				8A9922F8289CABA200CC1F9E /* Realm.swift */,
+			);
+			path = "Realm Model";
+			sourceTree = "<group>";
+		};
 		EDAB884D0E9858125EA92DBE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -739,6 +750,7 @@
 				6AF60DC62313B56B00F5CBA2 /* ResponseSerializer.swift in Sources */,
 				6AF60D192313B35800F5CBA2 /* Errors.swift in Sources */,
 				8A22FCC2288F7923004A8E5B /* RecommendTableViewViewModel.swift in Sources */,
+				8A9922F9289CABA200CC1F9E /* Realm.swift in Sources */,
 				8A4FA0442897752900090B44 /* DetailViewController.swift in Sources */,
 				6AF613BF2313C13A00F5CBA2 /* ScrollView.swift in Sources */,
 				6AF60D222313B35800F5CBA2 /* String.swift in Sources */,

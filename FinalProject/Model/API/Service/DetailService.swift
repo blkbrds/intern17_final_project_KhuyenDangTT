@@ -9,17 +9,18 @@
 import Alamofire
 import ObjectMapper
 
-final class DetailService {
+class DetailService {
 
     // MARK: - Properties
-    static let params: JSObject = [
+    static let shared = DetailService()
+     let params: JSObject = [
         "client_id": HomeService.HomeParam.clientID,
         "client_secret": HomeService.HomeParam.clientSecret,
         "v": HomeService.HomeParam.version
     ]
 
     // MARK: - Class func
-    class func getDetailVenueById(id: String, completion: @escaping Completion<DetailVenue>) {
+    func getDetailVenueById(id: String, completion: @escaping Completion<DetailVenue>) {
         let urlString = "https://api.foursquare.com/v2/venues/" + id
         api.request(method: .get, urlString: urlString, parameters: params) { result in
             switch result {
@@ -27,8 +28,9 @@ final class DetailService {
                 if let data = data as? JSObject,
                    let response = data["response"] as? JSObject,
                    let venue = response["venue"] as? JSObject {
-                    let detailVenue: DetailVenue
-                    detailVenue = Mapper<DetailVenue>().map(JSONObject: venue) ?? DetailVenue.init()
+                    guard let detailVenue = Mapper<DetailVenue>().map(JSONObject: venue) else {
+                        return completion(.failure(Api.Error.json))
+                    }
                     completion(.success(detailVenue))
                 } else {
                     completion(.failure(Api.Error.json))

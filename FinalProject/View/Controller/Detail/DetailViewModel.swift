@@ -21,7 +21,7 @@ final class DetailViewModel {
 
     // MARK: - Public func
     func getDetailById(completion: @escaping APICompletion) {
-        DetailService.getDetailVenueById(id: id) { [weak self] result in
+        DetailService.shared.getDetailVenueById(id: id) { [weak self] result in
             guard let this = self else { return }
             switch result {
             case .success(let detailVenue):
