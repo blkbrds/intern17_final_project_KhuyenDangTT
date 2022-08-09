@@ -7,14 +7,23 @@
 //
 
 import ObjectMapper
+import RealmSwift
 
-final class Photo: Mappable {
-    
-    var groups: [PhotoGroups]?
+final class Photo: Object, Mappable {
 
-    required init?(map: Map) { }
-    
+    var items = List<PhotoItem>()
+    var itemsArray: [PhotoItem] = []
+
+    convenience required init?(map: Map) {
+        self.init()
+        self.mapping(map: map)
+    }
+
     func mapping(map: Map) {
-        groups <- map["groups"]
+        itemsArray <- map["items"]
+        items.removeAll()
+        itemsArray.forEach { item in
+            items.append(item)
+        }
     }
 }

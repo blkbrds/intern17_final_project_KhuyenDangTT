@@ -7,25 +7,39 @@
 //
 
 import ObjectMapper
+import RealmSwift
 
-final class DetailVenue: Mappable {
+final class DetailVenue: Object, Mappable {
     
-    var name: String?
-    var location: DetailLocation?
-    var price: Price?
-    var like: Like?
-    var rating: Float?
-    var photo: Photo?
-    required init?(map: Map) { }
+    @objc dynamic var name: String?
+    @objc dynamic var id: String?
+    @objc dynamic var location: DetailLocation?
+    @objc dynamic var price: Price?
+    @objc dynamic var like: Like?
+    @objc dynamic var rating: Float = 0.0
+    var photos = List<Photo>()
+    var photoArray: [Photo] = []
 
-    init() {}
+    convenience required init?(map: Map) {
+        self.init()
+        self.mapping(map: map)
+    }
+
+    override class func primaryKey() -> String? {
+        return "id"
+    }
 
     func mapping(map: Map) {
+        id <- map["id"]
         name <- map["name"]
         location <- map["location"]
         price <- map["price"]
         like <- map["likes"]
         rating <- map["rating"]
-        photo <- map["photos"]
+        photoArray <- map["photos.groups"]
+        photos.removeAll()
+        photoArray.forEach { photo in
+            photos.append(photo)
+        }
     }
 }

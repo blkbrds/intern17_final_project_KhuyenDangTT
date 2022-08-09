@@ -7,13 +7,17 @@
 //
 
 import ObjectMapper
+import RealmSwift
 
-final class Price: Mappable {
+final class Price: Object, Mappable {
 
-    var tier: Int?
-    var currency: String?
+    @objc dynamic var tier: Int = 0
+    @objc dynamic var currency: String?
 
-    required init?(map: Map) { }
+    convenience required init?(map: Map) {
+        self.init()
+        self.mapping(map: map)
+    }
 
     func mapping(map: Map) {
         tier <- map["tier"]

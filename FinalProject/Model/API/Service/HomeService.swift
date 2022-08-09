@@ -38,11 +38,14 @@ class HomeService {
     class func shared() -> HomeService {
         return shareInstance
     }
+
+    // MARK: - Private init()
+    private init() { }
     
     // MARK: - Public func
      func getRecommendVenues(completion: @escaping Completion<[RecommendVenue]>) {
         let recommendParams = params.merging(addRecommendParams) { _, _ in }
-        let urlString = Api.Path.baseURL
+        let urlString = Api.Path.baseURL + Api.Path.recommendURL
         api.request(method: .get, urlString: urlString, parameters: recommendParams ) { result in
             switch result {
             case .success(let data):
@@ -67,7 +70,7 @@ class HomeService {
 
      func getNearVenues(completion: @escaping Completion<[RecommendVenue]>) {
         let nearParams = params.merging(addNearParams) { _, _ in }
-        let urlString = Api.Path.baseURL
+        let urlString = Api.Path.baseURL + Api.Path.recommendURL
         api.request(method: .get, urlString: urlString, parameters: nearParams ) { result in
             switch result {
             case .success(let data):
@@ -93,7 +96,7 @@ class HomeService {
      func getOpenningVenues(limit: Int, completion: @escaping Completion<[RecommendVenue]>) {
         let openningVenueParams = params.merging(addOpenningParams) { _, _ in }
         let openningParams = openningVenueParams.merging(["limit": "\(limit)"]) { _, _ in }
-        let urlString = Api.Path.baseURL
+        let urlString = Api.Path.baseURL + Api.Path.recommendURL
         api.request(method: .get, urlString: urlString, parameters: openningParams ) { result in
             switch result {
             case .success(let data):

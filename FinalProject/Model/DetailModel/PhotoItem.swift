@@ -7,20 +7,22 @@
 //
 
 import ObjectMapper
+import RealmSwift
+final class PhotoItem: Object, Mappable {
 
-final class PhotoItem: Mappable {
+    @objc dynamic var prefix: String = ""
+    @objc dynamic var suffix: String = ""
+    @objc dynamic var URLImage: String = ""
 
-    var prefix: String?
-    var suffix: String?
-    var URLImage: String {
-        return (prefix ?? "") + Config.sizeOfImage + (suffix ?? "")
+    convenience required init?(map: Map) {
+        self.init()
+        self.mapping(map: map)
     }
-
-    required init?(map: Map) { }
 
     func mapping(map: Map) {
         prefix <- map["prefix"]
         suffix <- map["suffix"]
+        URLImage = (prefix ?? "") + Config.sizeOfImage + (suffix ?? "")
     }
 }
 

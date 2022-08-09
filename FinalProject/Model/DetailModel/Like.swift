@@ -7,13 +7,17 @@
 //
 
 import ObjectMapper
+import RealmSwift
 
-final class Like: Mappable {
+final class Like: Object, Mappable {
 
-    var summary: String?
+    @objc dynamic var summary: String = ""
 
-    required init?(map: Map) { }
-
+    //required init?(map: Map) { }
+    convenience required init?(map: Map) {
+        self.init()
+        self.mapping(map: map)
+    }
     func mapping(map: Map) {
         summary <- map["summary"]
     }

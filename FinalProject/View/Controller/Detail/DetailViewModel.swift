@@ -7,13 +7,15 @@
 //
 
 import Foundation
+import RealmSwift
 
 final class DetailViewModel {
     
     // MARK: - Properties
     var id: String
     private (set) var detailVenue: DetailVenue?
-    private (set) var photoItem: [PhotoItem] = []
+    private (set) var photoItem =  List<PhotoItem>()
+//    private (set) var favoriteVenues: [FavoriteRealm] = []
 
     init(id: String) {
         self.id = id
@@ -35,8 +37,8 @@ final class DetailViewModel {
 
     func showAddress() -> String {
         var address: String = ""
-        for index in 0..<(detailVenue?.location?.formattedAddress?.count ?? 0) {
-            address += (detailVenue?.location?.formattedAddress?[index] ?? "") + " "
+        for index in 0..<(detailVenue?.location?.formattedAddress.count ?? 0) {
+            address += (detailVenue?.location?.formattedAddress[index] ?? "") + " "
         }
         return address + Config.seeMap
     }
@@ -46,17 +48,58 @@ final class DetailViewModel {
     }
 
     func numberOfItemsInSection() -> Int {
-        return detailVenue?.photo?.groups?.first?.items?.count ?? 0
+        return detailVenue?.photos.first?.items.count ?? 0
     }
 
     func viewModelForItem(at indexPath: IndexPath) -> DetailCellViewModel {
-        photoItem = detailVenue?.photo?.groups?.first?.items ?? []
+        photoItem = detailVenue?.photos.first?.items ?? List<PhotoItem>()
+      // photoItem = detailVenue?.photo?.groups.first?.items ?? []
         return DetailCellViewModel(photoItem: photoItem[indexPath.row])
+    }
+
+    func isFavorite() -> Bool {
+        do {
+            let realm = try Realm()
+            let result = realm.objects(DetailVenue.self).filter("id == %@", id).first
+            return result != nil
+        } catch {
+            print(error)
+            return false
+        }
+    }
+
+    func addFavoriteVenue() {
+        guard let detailVenue = detailVenue else {
+            return
+        }
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.create(DetailVenue.self, value: detailVenue, update: .all)
+//                realm.add(detailVenue)
+            }
+        } catch {
+            print(error)
+        }
+    }
+
+    func deleteVenue() {
+        do {
+            let realm = try Realm()
+            let result = realm.objects(DetailVenue.self).filter("id == %@", id).first
+            if let object = result {
+                try realm.write {
+                    realm.delete(object)
+                }
+            }
+        } catch {
+            print(error)
+        }
     }
 }
 
 extension DetailViewModel {
-    
+
     struct Config {
         static let seeMap: String = " (See map...)"
     }

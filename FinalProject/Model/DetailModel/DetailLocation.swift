@@ -7,14 +7,23 @@
 //
 
 import ObjectMapper
+import RealmSwift
 
-final class DetailLocation: Mappable {
+final class DetailLocation: Object, Mappable {
 
-    var formattedAddress: [String]?
+    var formattedAddress = List<String>()
+    var formattedAddressArray: [String] = []
 
-    required init?(map: Map) { }
+    convenience required init?(map: Map) {
+        self.init()
+        self.mapping(map: map)
+    }
 
     func mapping(map: Map) {
-        formattedAddress <- map["formattedAddress"]
+        formattedAddressArray <- map["formattedAddress"]
+        formattedAddress.removeAll()
+        formattedAddressArray.forEach { address in
+            formattedAddress.append(address)
+        }
     }
 }

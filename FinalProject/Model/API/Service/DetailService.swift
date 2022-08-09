@@ -25,10 +25,10 @@ class DetailService {
     class func shared() -> DetailService {
         return sharedInstance
     }
-    
+
     // MARK: - Private init()
     private init() {}
-    
+
     // MARK: - Public func
     func getDetailVenueById(id: String, completion: @escaping Completion<DetailVenue>) {
         let urlString = "https://api.foursquare.com/v2/venues/" + id
