@@ -16,7 +16,7 @@ class HomeService {
         let shareHomeService = HomeService()
         return shareHomeService
     }()
-    
+
     let params: JSObject = [
         "client_id": HomeParam.clientID,
         "client_secret": HomeParam.clientSecret,

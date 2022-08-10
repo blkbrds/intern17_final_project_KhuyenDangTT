@@ -23,20 +23,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let homeViewModel = HomeViewModel()
         homeVC.viewModel = homeViewModel
         let homeNavi = UINavigationController(rootViewController: homeVC)
-        homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "home"), selectedImage: UIImage(named: "home_fill"))
-    
+        homeVC.tabBarItem = UITabBarItem(title: "Home", image: #imageLiteral(resourceName: "home"), selectedImage: #imageLiteral(resourceName: "home_fill"))
+
         let searchVC = SearchViewController()
         let searchNavi = UINavigationController(rootViewController: searchVC)
-        searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "search"), selectedImage: UIImage(named: "search_fill"))
+        searchVC.tabBarItem = UITabBarItem(title: "Search", image: #imageLiteral(resourceName: "search"), selectedImage: #imageLiteral(resourceName: "search_fill"))
 
-//        let favoriteVC = FavoriteViewController()
-//        let favoriteNavi = UINavigationController(rootViewController: favoriteVC)
-//        favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(named: "favorite"), selectedImage: UIImage(named: "favorite_fill"))
-//        let favoriteViewModel = FavoriteViewModel()
-//        favoriteVC.viewModel = favoriteViewModel
+        let favoriteVC = FavoriteViewController()
+        let favoriteNavi = UINavigationController(rootViewController: favoriteVC)
+        favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: #imageLiteral(resourceName: "favorite"), selectedImage: #imageLiteral(resourceName: "favorite_fill"))
+        let favoriteViewModel = FavoriteViewModel()
+        favoriteVC.viewModel = favoriteViewModel
 
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [homeNavi, searchNavi]
+        tabBarController.viewControllers = [homeNavi, searchNavi, favoriteNavi]
         tabBarController.tabBar.tintColor = .black
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()

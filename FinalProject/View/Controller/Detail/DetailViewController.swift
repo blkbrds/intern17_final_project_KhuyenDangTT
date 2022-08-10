@@ -23,7 +23,7 @@ final class DetailViewController: UIViewController {
 
     // MARK: - Properties
     var viewModel: DetailViewModel?
-    
+
     // MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +62,7 @@ final class DetailViewController: UIViewController {
         guard let viewModel = viewModel else {
             return
         }
-        let image: UIImage? = viewModel.isFavorite() ? UIImage(named: "favorited") : UIImage(named: "favorite")
+        let image: UIImage? = viewModel.isFavorite() ? #imageLiteral(resourceName: "favorited") : #imageLiteral(resourceName: "favorite")
         favoriteButton.setImage(image, for: .normal)
         detailView.clipsToBounds = true
         detailView.layer.cornerRadius = 30
@@ -105,7 +105,7 @@ final class DetailViewController: UIViewController {
         } else {
             viewModel.addFavoriteVenue()
         }
-        let image: UIImage? = !isFavorite ? UIImage(named: "favorited") : UIImage(named: "favorite")
+        let image: UIImage? = !isFavorite ? #imageLiteral(resourceName: "favorited") : #imageLiteral(resourceName: "favorite")
         favoriteButton.setImage(image, for: .normal)
     }
 }
