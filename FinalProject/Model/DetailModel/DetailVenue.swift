@@ -10,19 +10,18 @@ import ObjectMapper
 import RealmSwift
 
 final class DetailVenue: Object, Mappable {
-    
+
     @objc dynamic var name: String?
     @objc dynamic var id: String?
     @objc dynamic var location: DetailLocation?
     @objc dynamic var price: Price?
     @objc dynamic var like: Like?
     @objc dynamic var rating: Float = 0.0
-    var photos = List<Photo>()
-    var photoArray: [Photo] = []
+    var photoList = List<Photo>()
+    var photos: [Photo] = []
 
     convenience required init?(map: Map) {
         self.init()
-        self.mapping(map: map)
     }
 
     override class func primaryKey() -> String? {
@@ -36,10 +35,6 @@ final class DetailVenue: Object, Mappable {
         price <- map["price"]
         like <- map["likes"]
         rating <- map["rating"]
-        photoArray <- map["photos.groups"]
-        photos.removeAll()
-        photoArray.forEach { photo in
-            photos.append(photo)
-        }
+        photos <- map["photos.groups"]
     }
 }

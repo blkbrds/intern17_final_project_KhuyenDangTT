@@ -12,10 +12,11 @@ import ObjectMapper
 class DetailService {
 
     // MARK: - Properties
-    static var sharedInstance: DetailService {
+    static var sharedInstance: DetailService = {
         let shareDetailService = DetailService()
         return shareDetailService
-    }
+    }()
+
     let params: JSObject = [
         "client_id": HomeService.HomeParam.clientID,
         "client_secret": HomeService.HomeParam.clientSecret,

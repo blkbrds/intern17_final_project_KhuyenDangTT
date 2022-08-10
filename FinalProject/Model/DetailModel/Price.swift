@@ -16,7 +16,6 @@ final class Price: Object, Mappable {
 
     convenience required init?(map: Map) {
         self.init()
-        self.mapping(map: map)
     }
 
     func mapping(map: Map) {

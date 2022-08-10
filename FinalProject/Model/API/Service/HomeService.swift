@@ -12,10 +12,11 @@ import ObjectMapper
 class HomeService {
 
     // MARK: - Properties
-    static var shareInstance: HomeService {
+    static var shareInstance: HomeService = {
         let shareHomeService = HomeService()
         return shareHomeService
-    }
+    }()
+    
     let params: JSObject = [
         "client_id": HomeParam.clientID,
         "client_secret": HomeParam.clientSecret,
@@ -41,7 +42,7 @@ class HomeService {
 
     // MARK: - Private init()
     private init() { }
-    
+
     // MARK: - Public func
      func getRecommendVenues(completion: @escaping Completion<[RecommendVenue]>) {
         let recommendParams = params.merging(addRecommendParams) { _, _ in }

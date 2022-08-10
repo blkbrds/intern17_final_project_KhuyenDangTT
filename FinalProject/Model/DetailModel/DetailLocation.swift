@@ -11,19 +11,14 @@ import RealmSwift
 
 final class DetailLocation: Object, Mappable {
 
-    var formattedAddress = List<String>()
-    var formattedAddressArray: [String] = []
+    var formattedAddressList = List<String>()
+    var formattedAddress: [String] = []
 
     convenience required init?(map: Map) {
         self.init()
-        self.mapping(map: map)
     }
 
     func mapping(map: Map) {
-        formattedAddressArray <- map["formattedAddress"]
-        formattedAddress.removeAll()
-        formattedAddressArray.forEach { address in
-            formattedAddress.append(address)
-        }
+        formattedAddress <- map["formattedAddress"]
     }
 }

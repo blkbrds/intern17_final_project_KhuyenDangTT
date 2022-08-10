@@ -13,11 +13,10 @@ final class Like: Object, Mappable {
 
     @objc dynamic var summary: String = ""
 
-    //required init?(map: Map) { }
     convenience required init?(map: Map) {
         self.init()
-        self.mapping(map: map)
     }
+
     func mapping(map: Map) {
         summary <- map["summary"]
     }

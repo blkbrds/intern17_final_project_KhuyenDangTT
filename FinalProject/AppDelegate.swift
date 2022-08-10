@@ -24,19 +24,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         homeVC.viewModel = homeViewModel
         let homeNavi = UINavigationController(rootViewController: homeVC)
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "home"), selectedImage: UIImage(named: "home_fill"))
-        
+    
         let searchVC = SearchViewController()
         let searchNavi = UINavigationController(rootViewController: searchVC)
         searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "search"), selectedImage: UIImage(named: "search_fill"))
-        
-        let favoriteVC = FavoriteViewController()
-        let favoriteNavi = UINavigationController(rootViewController: favoriteVC)
-        favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(named: "favorite"), selectedImage: UIImage(named: "favorite_fill"))
-        let favoriteViewModel = FavoriteViewModel()
-        favoriteVC.viewModel = favoriteViewModel
-        
+
+//        let favoriteVC = FavoriteViewController()
+//        let favoriteNavi = UINavigationController(rootViewController: favoriteVC)
+//        favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(named: "favorite"), selectedImage: UIImage(named: "favorite_fill"))
+//        let favoriteViewModel = FavoriteViewModel()
+//        favoriteVC.viewModel = favoriteViewModel
+
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [homeNavi, searchNavi, favoriteNavi]
+        tabBarController.viewControllers = [homeNavi, searchNavi]
         tabBarController.tabBar.tintColor = .black
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()

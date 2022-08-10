@@ -25,7 +25,6 @@ final class DetailCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         setupUI()
-        updateCell()
     }
 
     override func layoutSubviews() {
@@ -44,12 +43,13 @@ final class DetailCell: UICollectionViewCell {
     }
 
     private func updateCell() {
-        detailImageView.downloadImage(with: viewModel?.photoItem?.URLImage ?? "") { image in
+        detailImageView.downloadImage(with: viewModel?.photoItem?.urlImage ?? "") { image in
             self.detailImageView.image = image
         }
     }
 }
 
+// MARK: - Extension UIView
 extension UIView {
      func makeShadowAndCorners(corners: UIRectCorner, radius: CGFloat, shadowColor: UIColor, backgroundColor: UIColor, offset: CGSize = CGSize(width: 0, height: 0), opacity: Float = 1.0) {
         let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))

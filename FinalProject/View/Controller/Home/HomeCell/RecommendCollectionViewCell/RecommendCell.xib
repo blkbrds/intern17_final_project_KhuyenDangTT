@@ -20,9 +20,6 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="arp-xH-zUo">
                         <rect key="frame" x="0.0" y="0.0" width="219" height="120"/>
                         <color key="backgroundColor" red="0.43917970680000001" green="0.80294689119999996" blue="0.78287961620000002" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="120" id="OWf-ox-mtC"/>
-                        </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                 <real key="value" value="15"/>
@@ -50,6 +47,7 @@
                 <constraint firstItem="mu7-HV-2mg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="GdK-sa-6O3"/>
                 <constraint firstAttribute="trailing" secondItem="2ia-o6-Ea1" secondAttribute="trailing" constant="5" id="Xuw-cz-W4L"/>
                 <constraint firstItem="2ia-o6-Ea1" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="ecW-wC-wBS"/>
+                <constraint firstItem="arp-xH-zUo" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" multiplier="0.729483" id="fBd-Sm-WVD"/>
                 <constraint firstItem="arp-xH-zUo" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="hUy-bm-BV6"/>
                 <constraint firstItem="arp-xH-zUo" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hlb-n4-lui"/>
                 <constraint firstAttribute="trailing" secondItem="arp-xH-zUo" secondAttribute="trailing" id="nJT-TO-gc2"/>

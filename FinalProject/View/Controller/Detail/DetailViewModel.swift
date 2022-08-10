@@ -10,18 +10,29 @@ import Foundation
 import RealmSwift
 
 final class DetailViewModel {
-    
+
     // MARK: - Properties
     var id: String
     private (set) var detailVenue: DetailVenue?
-    private (set) var photoItem =  List<PhotoItem>()
-//    private (set) var favoriteVenues: [FavoriteRealm] = []
 
+    // MARK: - Init func
     init(id: String) {
         self.id = id
     }
 
     // MARK: - Public func
+    func convertArraytoList() {
+        detailVenue?.location?.formattedAddress.forEach { address in
+            detailVenue?.location?.formattedAddressList.append(address)
+        }
+        detailVenue?.photos.forEach { photo in
+            detailVenue?.photoList.append(photo)
+        }
+        detailVenue?.photos.first?.items.forEach { item in
+            detailVenue?.photos.first?.itemList.append(item)
+        }
+    }
+
     func getDetailById(completion: @escaping APICompletion) {
         DetailService.shared().getDetailVenueById(id: id) { [weak self] result in
             guard let this = self else { return }
@@ -52,15 +63,14 @@ final class DetailViewModel {
     }
 
     func viewModelForItem(at indexPath: IndexPath) -> DetailCellViewModel {
-        photoItem = detailVenue?.photos.first?.items ?? List<PhotoItem>()
-      // photoItem = detailVenue?.photo?.groups.first?.items ?? []
+        let photoItem = detailVenue?.photos.first?.items ?? []
         return DetailCellViewModel(photoItem: photoItem[indexPath.row])
     }
 
     func isFavorite() -> Bool {
         do {
             let realm = try Realm()
-            let result = realm.objects(DetailVenue.self).filter("id == %@", id).first
+            let result = realm.objects(DetailVenue.self).first(where: { $0.id == id })
             return result != nil
         } catch {
             print(error)
@@ -75,18 +85,18 @@ final class DetailViewModel {
         do {
             let realm = try Realm()
             try realm.write {
+                convertArraytoList()
                 realm.create(DetailVenue.self, value: detailVenue, update: .all)
-//                realm.add(detailVenue)
             }
         } catch {
             print(error)
         }
     }
 
-    func deleteVenue() {
+    func deleteFavoriteVenue() {
         do {
             let realm = try Realm()
-            let result = realm.objects(DetailVenue.self).filter("id == %@", id).first
+            let result = realm.objects(DetailVenue.self).first(where: { $0.id == id })
             if let object = result {
                 try realm.write {
                     realm.delete(object)

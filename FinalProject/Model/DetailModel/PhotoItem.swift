@@ -12,17 +12,16 @@ final class PhotoItem: Object, Mappable {
 
     @objc dynamic var prefix: String = ""
     @objc dynamic var suffix: String = ""
-    @objc dynamic var URLImage: String = ""
+    @objc dynamic var urlImage: String = ""
 
     convenience required init?(map: Map) {
         self.init()
-        self.mapping(map: map)
     }
 
     func mapping(map: Map) {
         prefix <- map["prefix"]
         suffix <- map["suffix"]
-        URLImage = (prefix ?? "") + Config.sizeOfImage + (suffix ?? "")
+        urlImage = prefix + Config.sizeOfImage + suffix
     }
 }
 

@@ -23,8 +23,7 @@ final class DetailViewController: UIViewController {
 
     // MARK: - Properties
     var viewModel: DetailViewModel?
-    var viewModelFavorite: FavoriteViewModel?
-
+    
     // MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +31,6 @@ final class DetailViewController: UIViewController {
         setupData()
         configUICollectionView()
         configUI()
-        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -64,11 +62,8 @@ final class DetailViewController: UIViewController {
         guard let viewModel = viewModel else {
             return
         }
-        if viewModel.isFavorite() {
-            favoriteButton.setImage(UIImage(named: "favorited"), for: .normal)
-        } else {
-            favoriteButton.setImage(UIImage(named: "favorite"), for: .normal)
-        }
+        let image: UIImage? = viewModel.isFavorite() ? UIImage(named: "favorited") : UIImage(named: "favorite")
+        favoriteButton.setImage(image, for: .normal)
         detailView.clipsToBounds = true
         detailView.layer.cornerRadius = 30
         detailView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -93,22 +88,23 @@ final class DetailViewController: UIViewController {
             star.image = UIImage(named: Config.starEmpty)
         }
     }
+
+    // MARK: - IBActions
     @IBAction func seeMapButtonTouchUpInside(_ sender: UIButton) {
 //        let mapVC = MapViewController()
 //        navigationController?.pushViewController(mapVC, animated: true)
     }
-    
+
     @IBAction private func favoriteButtonTouchUpInside(_ sender: UIButton) {
         guard let viewModel = viewModel else {
             return
         }
         let isFavorite = viewModel.isFavorite()
         if isFavorite {
-            viewModel.deleteVenue()
+            viewModel.deleteFavoriteVenue()
         } else {
             viewModel.addFavoriteVenue()
         }
-
         let image: UIImage? = !isFavorite ? UIImage(named: "favorited") : UIImage(named: "favorite")
         favoriteButton.setImage(image, for: .normal)
     }

@@ -11,19 +11,14 @@ import RealmSwift
 
 final class Photo: Object, Mappable {
 
-    var items = List<PhotoItem>()
-    var itemsArray: [PhotoItem] = []
+    var itemList = List<PhotoItem>()
+    var items: [PhotoItem] = []
 
     convenience required init?(map: Map) {
         self.init()
-        self.mapping(map: map)
     }
 
     func mapping(map: Map) {
-        itemsArray <- map["items"]
-        items.removeAll()
-        itemsArray.forEach { item in
-            items.append(item)
-        }
+        items <- map["items"]
     }
 }
