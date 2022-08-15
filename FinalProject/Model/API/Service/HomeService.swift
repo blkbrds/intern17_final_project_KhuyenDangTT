@@ -11,38 +11,83 @@ import ObjectMapper
 
 class HomeService {
 
-    struct HomeParam {
-        static let clientID = "PQXVYOXN4R55FNHKV05EUIF5OR4GZU4F2ITMOGIW3ZA1CKCZ"
-        static let clientSecret = "JEG0HJKBHZNL4ADKBSMRVBFDDFVZWSFCTQ2P2A3UDQXAFAIK"
-        static let version = "20211118"
-        static let query = "coffee"
+    struct Param {
+        var ll: String?
+        var limit: Int
+        var near: String?
+        var radius: Int?
+        var openNow: Bool?
+        var offset: Int?
+
+        init(ll: String? = nil,
+             limit: Int,
+             near: String? = nil,
+             radius: Int? = nil,
+             openNow: Bool? = nil,
+             offset: Int? = nil) {
+
+            self.ll = ll
+            self.limit = limit
+            self.near = near
+            self.radius = radius
+            self.openNow = openNow
+            self.offset = offset
+        }
+
+        func toJSON() -> [String: Any] {
+            var json: [String: Any] = defaultJSON
+            if let ll = ll {
+                json["ll"] = ll
+            }
+
+            if let radius = radius {
+                json["radius"] = radius
+            }
+
+            if let near = near {
+                json["near"] = near
+            }
+
+            if let openNow = openNow {
+                json["openNow"] = openNow
+            }
+
+            if let offset = offset {
+                json["offset"] = offset
+            }
+
+            json["limit"] = limit
+            return json
+        }
+
+        var defaultJSON: [String: Any] {
+            var json: [String: Any] = [:]
+            json["client_id"] = Api.Params.clientID
+            json["client_secret"] = Api.Params.clientSecret
+            json["v"] = Api.Params.version
+            json["query"] = Api.Params.query
+            return json
+        }
     }
 
-    static let params: JSObject = [
-        "client_id": HomeParam.clientID,
-        "client_secret": HomeParam.clientSecret,
-        "v": HomeParam.version,
-        "query": HomeParam.query]
+    // MARK: - Properties
+    static var shareInstance: HomeService = {
+        let shareHomeService = HomeService()
+        return shareHomeService
+    }()
 
-    static let addRecommendParams: JSObject = [
-        "ll": "16.069954,108.218844",
-        "limit": "10"
-    ]
+    // MARK: - Private init()
+    private init() { }
 
-    static let addNearParams: JSObject = [
-        "near": "Viet Nam, Da Nang",
-        "limit": "10"
-    ]
+    // MARK: - Class func
+    class func shared() -> HomeService {
+        return shareInstance
+    }
 
-    static let addOpenningParams: JSObject = [
-        "near": "Viet Nam, Da Nang",
-        "openNow": "true"
-    ]
-
-    class func getRecommendVenues(completion: @escaping Completion<[RecommendVenue]>) {
-        let recommendParams = params.merging(addRecommendParams) { _, _ in }
+    // MARK: - Public func
+    func getVenues(params: Param, completion: @escaping Completion<[RecommendVenue]>) {
         let urlString = Api.Path.baseURL
-        api.request(method: .get, urlString: urlString, parameters: recommendParams ) { result in
+        api.request(method: .get, urlString: urlString, parameters: params.toJSON()) { result in
             switch result {
             case .success(let data):
                 if let data = data as? JSObject,
@@ -50,10 +95,7 @@ class HomeService {
                    let groups = response["groups"] as? JSArray {
                     var recommendVenue: [RecommendVenue] = []
                     guard let items = groups.first?["items"] as? JSArray else { return }
-                        recommendVenue = Mapper<RecommendVenue>().mapArray(JSONArray: items)
-                    for venue in recommendVenue {
-                        venue.image = randomImage()
-                    }
+                    recommendVenue = Mapper<RecommendVenue>().mapArray(JSONArray: items)
                     completion(.success(recommendVenue))
                 } else {
                     completion(.failure(Api.Error.json))
@@ -62,61 +104,5 @@ class HomeService {
                 completion(.failure(error))
             }
         }
-    }
-
-    class func getNearVenues(completion: @escaping Completion<[RecommendVenue]>) {
-        let nearParams = params.merging(addNearParams) { _, _ in }
-        let urlString = Api.Path.baseURL
-        api.request(method: .get, urlString: urlString, parameters: nearParams ) { result in
-            switch result {
-            case .success(let data):
-                if let data = data as? JSObject,
-                   let response = data["response"] as? JSObject,
-                   let groups = response["groups"] as? JSArray {
-                    var recommendVenue: [RecommendVenue] = []
-                        guard let items = groups.first?["items"] as? JSArray else { return }
-                        recommendVenue = Mapper<RecommendVenue>().mapArray(JSONArray: items)
-                    for venue in recommendVenue {
-                        venue.image = randomImage()
-                    }
-                    completion(.success(recommendVenue))
-                } else {
-                    completion(.failure(Api.Error.json))
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    class func getOpenningVenues(limit: Int, completion: @escaping Completion<[RecommendVenue]>) {
-        let abc = params.merging(addOpenningParams) { (current, _) in current }
-        let openningParams = abc.merging(["limit": "\(limit)"]) { _, _ in }
-        let urlString = Api.Path.baseURL
-        api.request(method: .get, urlString: urlString, parameters: openningParams ) { result in
-            switch result {
-            case .success(let data):
-                if let data = data as? JSObject,
-                   let response = data["response"] as? JSObject,
-                   let groups = response["groups"] as? JSArray {
-                    var recommendVenue: [RecommendVenue] = []
-                    guard let items = groups.first?["items"] as? JSArray else { return }
-                        recommendVenue = Mapper<RecommendVenue>().mapArray(JSONArray: items)
-                    for venue in recommendVenue {
-                        venue.image = randomImage()
-                    }
-                    completion(.success(recommendVenue))
-                } else {
-                    completion(.failure(Api.Error.json))
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    class func randomImage() -> String {
-        let index = Int.random(min: 1, max: 13)
-        return "coffee\(index)"
     }
 }

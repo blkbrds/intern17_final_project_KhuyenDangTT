@@ -16,9 +16,9 @@ final class OpeningTableViewCell: UITableViewCell {
 
     // MARK: - Enum
     enum Action {
-
         case loadMore
     }
+
     // MARK: - IBOulets
     @IBOutlet private weak var collectionView: UICollectionView!
 
@@ -38,8 +38,7 @@ final class OpeningTableViewCell: UITableViewCell {
 
     // MARK: - Private func
     private func configUIOpenningCollectionView() {
-        let nib = UINib(nibName: "RecommendCell", bundle: .main)
-        collectionView.register(nib, forCellWithReuseIdentifier: "RecommendCell")
+        collectionView.register(RecommendCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
@@ -55,9 +54,7 @@ extension OpeningTableViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecommendCell", for: indexPath) as? RecommendCell else {
-            return UICollectionViewCell()
-        }
+        let cell = collectionView.dequeue(RecommendCell.self, forIndexPath: indexPath)
         cell.viewModel = viewModel?.viewModelForItem(at: indexPath)
         return cell
     }

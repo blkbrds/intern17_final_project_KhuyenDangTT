@@ -28,8 +28,7 @@ final class RecommendTableViewCell: UITableViewCell {
 
     // MARK: - Private func
     private func configUIRecommendCollectionView() {
-        let nib = UINib(nibName: "RecommendCell", bundle: .main)
-        collectionView.register(nib, forCellWithReuseIdentifier: "RecommendCell")
+        collectionView.register(RecommendCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
@@ -39,14 +38,13 @@ final class RecommendTableViewCell: UITableViewCell {
 
 // MARK: - UICollectionViewDataSource
 extension RecommendTableViewCell: UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel?.numberOfItemInSection() ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecommendCell", for: indexPath) as? RecommendCell else {
-            return UICollectionViewCell()
-        }
+        let cell = collectionView.dequeue(RecommendCell.self, forIndexPath: indexPath)
         cell.viewModel = viewModel?.viewModelForItem(at: indexPath)
         return cell
     }
@@ -66,6 +64,7 @@ extension RecommendTableViewCell: UICollectionViewDelegateFlowLayout {
 
 // MARK: - RecommendTableViewCell
 extension RecommendTableViewCell {
+    
     struct Config {
         static let minimumLineSpacingForSection: CGFloat = 20
         static let widthOfItem: CGFloat = (UIScreen.main.bounds.width - 30) * 2 / 3

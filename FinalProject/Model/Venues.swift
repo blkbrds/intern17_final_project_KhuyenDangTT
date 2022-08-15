@@ -9,7 +9,7 @@
 import ObjectMapper
 
 class Venues: Mappable {
-    
+
     var location: Location?
     var id: String?
     var name: String?
