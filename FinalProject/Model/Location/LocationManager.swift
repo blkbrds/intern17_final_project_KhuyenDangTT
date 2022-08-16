@@ -12,7 +12,8 @@ import Contacts
 
 typealias LocationCompletion = (CLLocation) -> Void
 
-final class LocationManager: NSObject {
+@objc(LocationManager)
+class LocationManager: NSObject {
 
     // MARK: - Properties
     private static var sharedLocationManager: LocationManager = {
@@ -134,7 +135,7 @@ extension CLPlacemark {
 }
 
 extension CLLocation {
-    
+
     func placemark(completion: @escaping (_ placemark: CLPlacemark?, _ error: Error?) -> Void) {
         CLGeocoder().reverseGeocodeLocation(self) { completion($0?.first, $1) }
     }

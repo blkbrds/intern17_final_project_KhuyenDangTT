@@ -94,7 +94,10 @@ class HomeService {
                    let response = data["response"] as? JSObject,
                    let groups = response["groups"] as? JSArray {
                     var recommendVenue: [RecommendVenue] = []
-                    guard let items = groups.first?["items"] as? JSArray else { return }
+                    guard let items = groups.first?["items"] as? JSArray else {
+                        completion(.failure(Api.Error.json))
+                        return
+                    }
                     recommendVenue = Mapper<RecommendVenue>().mapArray(JSONArray: items)
                     completion(.success(recommendVenue))
                 } else {
