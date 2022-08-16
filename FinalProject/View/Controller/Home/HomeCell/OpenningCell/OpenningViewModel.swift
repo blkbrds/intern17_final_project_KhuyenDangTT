@@ -10,11 +10,13 @@ import Foundation
 final class OpenningViewModel {
 
     // MARK: - Properties
-    private var openningVenues: [RecommendVenue] = []
+    private (set) var openningVenues: [RecommendVenue] = []
+    private (set) var isFull: Bool = false
 
     // MARK: - Init
-    init(openningVenues: [RecommendVenue]) {
+    init(openningVenues: [RecommendVenue], isFull: Bool) {
         self.openningVenues = openningVenues
+        self.isFull = isFull
     }
 
     // MARK: - Public func
@@ -24,7 +26,7 @@ final class OpenningViewModel {
 
     func isLoadMore(at indexPath: IndexPath) -> Bool {
         guard indexPath.row < openningVenues.count else { return false }
-        return indexPath.row == openningVenues.count - 1
+        return indexPath.row == openningVenues.count - 4 && !isFull
     }
 
     func viewModelForItem(at indexPath: IndexPath) -> RecommendViewModel {

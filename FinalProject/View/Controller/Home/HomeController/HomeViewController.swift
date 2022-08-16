@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 // MARK: - Protocol
 protocol HomeViewControllerDelegate: AnyObject {
@@ -26,15 +27,19 @@ final class HomeViewController: UIViewController {
 
     // MARK: - Properties
     var viewModel: HomeViewModel?
-    weak var delegate: HomeViewControllerDelegate?
+    let locationManager = CLLocationManager()
+
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupDataRecommend()
-        setupDataNear()
-        setupDataOpenning()
         configUI()
         configUIRecommendTableView()
+        LocationManager.shared().startUpdating { [weak self] _ in
+            guard let this = self else { return }
+            this.setupDataRecommend()
+            this.setupDataNear()
+            this.setupDataOpenning()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -62,52 +67,69 @@ final class HomeViewController: UIViewController {
     }
 
     private func setupDataRecommend() {
-        HUD.show()
         guard let viewModel = viewModel else { return }
+        HUD.show()
         viewModel.getRecommendVenues { [weak self] result in
             HUD.dismiss()
             guard let this = self else { return }
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
                     this.tableView.reloadRows(at: [IndexPath(row: TypeRow.recommend.rawValue, section: Config.section)], with: .fade)
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
                 }
-            case .failure(let error):
-                this.alert(msg: error.localizedDescription, handler: nil)
             }
         }
     }
 
     private func setupDataNear() {
-        HUD.show()
         guard let viewModel = viewModel else { return }
+        HUD.show()
         viewModel.getNearVenues { [weak self] result in
             HUD.dismiss()
             guard let this = self else { return }
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
                     this.tableView.reloadRows(at: [IndexPath(row: TypeRow.near.rawValue, section: Config.section)], with: .fade)
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
                 }
-            case .failure(let error):
-                this.alert(msg: error.localizedDescription, handler: nil)
             }
         }
     }
 
-    private func setupDataOpenning(limit: Int = 10) {
-        HUD.show()
+    private func setupDataOpenning() {
         guard let viewModel = viewModel else { return }
-        viewModel.getOpenningVenues(limit: limit ) { [weak self] result in
+        HUD.show()
+        viewModel.getOpenningVenues(isLoadMore: false) { [weak self] result in
             HUD.dismiss()
             guard let this = self else { return }
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
                     this.tableView.reloadRows(at: [IndexPath(row: TypeRow.openning.rawValue, section: Config.section)], with: .fade)
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
                 }
-            case .failure(let error):
-                this.alert(msg: error.localizedDescription, handler: nil)
+            }
+        }
+    }
+
+    private func loadMore(for cell: OpeningTableViewCell) {
+        guard let viewModel = viewModel else { return }
+        HUD.show()
+        viewModel.getOpenningVenues(isLoadMore: true) { [weak self] result in
+            HUD.dismiss()
+            guard let this = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    cell.viewModel = viewModel.viewModelForOpenning()
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
+                }
             }
         }
     }
@@ -167,10 +189,11 @@ extension HomeViewController: UITableViewDelegate {
 
 // MARK: - OpeningTableViewCellDelegate
 extension HomeViewController: OpeningTableViewCellDelegate {
+
     func cell(_ cell: OpeningTableViewCell, needPerformAction action: OpeningTableViewCell.Action) {
         switch action {
         case .loadMore:
-            setupDataOpenning(limit: 20)
+            loadMore(for: cell)
         case .showDetail(let id):
             let detailVC = DetailViewController()
             detailVC.viewModel = DetailViewModel(id: id)

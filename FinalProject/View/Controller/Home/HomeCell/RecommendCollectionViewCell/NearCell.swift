@@ -27,7 +27,6 @@ final class NearCell: UICollectionViewCell {
         super.layoutSubviews()
         self.layer.cornerRadius = Config.cornerRadius
         nameLabel.adjustsFontSizeToFitWidth = true
-        addressLabel.adjustsFontSizeToFitWidth = true
     }
 
     private func updateNearCell() {

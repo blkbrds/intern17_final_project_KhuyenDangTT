@@ -58,19 +58,19 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Price: 1$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5pd-Ps-lSd">
-                            <rect key="frame" x="20" y="169" width="374" height="20.5"/>
+                            <rect key="frame" x="20" y="169.5" width="374" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" text="57 Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AED-lD-SYK">
-                            <rect key="frame" x="20" y="189.5" width="374" height="20.5"/>
+                            <rect key="frame" x="20" y="190" width="374" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="254" text="Our Services" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLl-lZ-X3L">
-                            <rect key="frame" x="20" y="235" width="374" height="26.5"/>
+                            <rect key="frame" x="20" y="235.5" width="374" height="26.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="22"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -106,7 +106,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="80Z-jv-12d">
-                            <rect key="frame" x="20" y="276.5" width="374" height="69.5"/>
+                            <rect key="frame" x="20" y="277" width="374" height="69.5"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tyG-Jc-vhg">
                                     <rect key="frame" x="0.0" y="0.0" width="75" height="64"/>
@@ -180,17 +180,11 @@
                                 </stackView>
                             </subviews>
                         </stackView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="egE-gQ-kCC">
-                            <rect key="frame" x="20" y="131.5" width="374" height="32.5"/>
-                            <state key="normal">
-                                <attributedString key="attributedTitle">
-                                    <fragment content="39 (Nguyễn Thái Học), Đà Nẵng, Thành Phố Đà Nẵng, Việt Nam (See map...)">
-                                        <attributes>
-                                            <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <font key="NSFont" metaFont="system" size="17"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="egE-gQ-kCC">
+                            <rect key="frame" x="20" y="131.5" width="374" height="33"/>
+                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                            <state key="normal" title="39 (Nguyễn Thái Học), Đà Nẵng, Thành Phố Đà Nẵng, Việt Nam (See map...)">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </state>
                             <connections>
                                 <action selector="seeMapButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="BpW-B4-4DI"/>
