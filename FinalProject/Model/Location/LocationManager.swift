@@ -12,7 +12,6 @@ import Contacts
 
 typealias LocationCompletion = (CLLocation) -> Void
 
-@objc(LocationManager)
 class LocationManager: NSObject {
 
     // MARK: - Properties
@@ -39,8 +38,8 @@ class LocationManager: NSObject {
         locationManager.allowsBackgroundLocationUpdates = true
     }
 
-    // MARK: - Init
-    override init() {
+    // MARK: - Private init
+    private override init() {
         super.init()
         configLocationManager()
     }
