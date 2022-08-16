@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import SVProgressHUD
+
+typealias HUD = SVProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,23 +18,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = UINavigationController(rootViewController: UIViewController())
-        window?.makeKeyAndVisible()
+        configTabbar()
+        LocationManager.shared().request()
         return true
     }
 
-    func applicationWillResignActive(_ application: UIApplication) {
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-    }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
+    // MARK: - Private func
+    func configTabbar() {
+        let homeVC = HomeViewController()
+        let homeViewModel = HomeViewModel()
+        homeVC.viewModel = homeViewModel
+        let homeNavi = UINavigationController(rootViewController: homeVC)
+        homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "home"), selectedImage: UIImage(named: "home_fill"))
+        let searchVC = SearchViewController()
+        let searchNavi = UINavigationController(rootViewController: searchVC)
+        searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "search"), selectedImage: UIImage(named: "search_fill"))
+        let favoriteVC = FavoriteViewController()
+        let favoriteNavi = UINavigationController(rootViewController: favoriteVC)
+        favoriteVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(named: "favorite"), selectedImage: UIImage(named: "favorite_fill"))
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [homeNavi, searchNavi, favoriteNavi]
+        tabBarController.tabBar.tintColor = .black
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+        window?.backgroundColor = .white
     }
 }

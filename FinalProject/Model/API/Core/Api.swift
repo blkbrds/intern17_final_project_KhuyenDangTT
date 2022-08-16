@@ -12,7 +12,14 @@ import Alamofire
 final class Api {
 
     struct Path {
-        static let baseURL = "https://"
+        static let baseURL = "https://api.foursquare.com/v2/venues/explore"
+    }
+
+    struct Params {
+        static let clientID = "PQXVYOXN4R55FNHKV05EUIF5OR4GZU4F2ITMOGIW3ZA1CKCZ"
+        static let clientSecret = "JEG0HJKBHZNL4ADKBSMRVBFDDFVZWSFCTQ2P2A3UDQXAFAIK"
+        static let version = "20211118"
+        static let query = "coffee"
     }
 }
 
