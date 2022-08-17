@@ -39,8 +39,7 @@ final class NearTableViewCell: UITableViewCell {
 
     // MARK: - Private func
     private func configUINearCollectionView() {
-        let nib = UINib(nibName: "NearCell", bundle: .main)
-        collectionView.register(nib, forCellWithReuseIdentifier: "NearCell")
+        collectionView.register(NearCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
@@ -56,9 +55,7 @@ extension NearTableViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NearCell", for: indexPath) as? NearCell else {
-            return UICollectionViewCell()
-        }
+        let cell = collectionView.dequeue(NearCell.self, forIndexPath: indexPath)
         cell.viewModel = viewModel?.viewModelForItem(at: indexPath)
         return cell
     }
@@ -84,6 +81,7 @@ extension NearTableViewCell: UICollectionViewDelegate {
 }
 // MARK: - Config
 extension NearTableViewCell {
+
     struct Config {
         static let minimumLineSpacingForSection: CGFloat = 20
         static let widthOfItem: CGFloat = (UIScreen.main.bounds.width - 40) / 2.5

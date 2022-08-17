@@ -18,6 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
+        configTabbar()
+        LocationManager.shared().request()
+        return true
+    }
+
+    // MARK: - Private func
+    func configTabbar() {
         let homeVC = HomeViewController()
         let homeViewModel = HomeViewModel()
         homeVC.viewModel = homeViewModel
@@ -35,6 +42,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
         window?.backgroundColor = .white
-        return true
     }
 }
