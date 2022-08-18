@@ -17,6 +17,7 @@ final class OpeningTableViewCell: UITableViewCell {
     // MARK: - Enum
     enum Action {
         case loadMore
+        case showDetail
     }
 
     // MARK: - IBOulets
@@ -84,9 +85,13 @@ extension OpeningTableViewCell: UICollectionViewDelegate {
             delegate?.cell(self, needPerformAction: .loadMore)
         }
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.cell(self, needPerformAction: .showDetail)
+    }
 }
 
-// MARK: - OpeningTableViewCell
+// MARK: - Config
 extension OpeningTableViewCell {
 
     struct Config {

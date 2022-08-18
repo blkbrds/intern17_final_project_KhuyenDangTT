@@ -8,8 +8,18 @@
 
 import UIKit
 
+protocol RecommendTableViewCellDelegate: AnyObject {
+    func cell(_ cell: RecommendTableViewCell, needPerformAction action: RecommendTableViewCell.Action)
+}
+
 final class RecommendTableViewCell: UITableViewCell {
 
+    // MARK: - Enum
+    enum Action {
+
+        case showDetail
+    }
+    
     // MARK: - IBOutlets
     @IBOutlet private weak var collectionView: UICollectionView!
 
@@ -19,6 +29,7 @@ final class RecommendTableViewCell: UITableViewCell {
             collectionView.reloadData()
         }
     }
+    weak var delegate: RecommendTableViewCellDelegate?
 
     // MARK: - Life cycle
     override func awakeFromNib() {
@@ -62,7 +73,14 @@ extension RecommendTableViewCell: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - RecommendTableViewCell
+// MARK: - UICollectionViewDelegate
+extension RecommendTableViewCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.cell(self, needPerformAction: .showDetail)
+    }
+}
+
+// MARK: - Config
 extension RecommendTableViewCell {
     
     struct Config {

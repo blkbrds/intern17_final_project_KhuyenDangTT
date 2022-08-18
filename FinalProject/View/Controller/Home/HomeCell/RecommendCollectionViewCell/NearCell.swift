@@ -37,7 +37,7 @@ final class NearCell: UICollectionViewCell {
     }
 }
 
-// MARK: - NearCell
+// MARK: - Config
 extension NearCell {
 
     struct Config {
