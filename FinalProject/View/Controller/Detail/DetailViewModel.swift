@@ -14,10 +14,17 @@ final class DetailViewModel {
     // MARK: - Properties
     var id: String
     private (set) var detailVenue: DetailVenue?
+    private var similarVenues: [SimilarVenue] = []
 
     // MARK: - Init func
     init(id: String) {
         self.id = id
+    }
+
+    // MARK: - Private func
+    private func randomImage() -> String {
+        let index = Int.random(min: 1, max: 13)
+        return "coffee\(index)"
     }
 
     // MARK: - Public func
@@ -33,6 +40,7 @@ final class DetailViewModel {
         }
     }
 
+    // MARK: - Detail
     func getDetailById(completion: @escaping APICompletion) {
         DetailService.shared().getDetailVenueById(id: id) { [weak self] result in
             guard let this = self else { return }
@@ -67,6 +75,7 @@ final class DetailViewModel {
         return DetailCellViewModel(photoItem: photoItem[indexPath.row])
     }
 
+    // MARK: - Favorite
     func isFavorite() -> Bool {
         do {
             let realm = try Realm()
@@ -79,9 +88,7 @@ final class DetailViewModel {
     }
 
     func addFavoriteVenue() {
-        guard let detailVenue = detailVenue else {
-            return
-        }
+        guard let detailVenue = detailVenue else { return }
         do {
             let realm = try Realm()
             try realm.write {
@@ -105,6 +112,31 @@ final class DetailViewModel {
         } catch {
             print(error)
         }
+    }
+
+    // MARK: - Similar
+    func getSimilarVenue(completion: @escaping APICompletion) {
+        DetailService.shared().getSimilarVenues(id: id) { [weak self] result in
+            guard let this = self else { return }
+            switch result {
+            case .success(let similarVenues):
+                for venue in similarVenues {
+                    venue.image = this.randomImage()
+                }
+                this.similarVenues = similarVenues
+                completion(.success)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    func viewModelForItemSimilarVenue(at indexPath: IndexPath) -> SimilarCellViewModel {
+        return SimilarCellViewModel(similarVenue: similarVenues[indexPath.row])
+    }
+
+    func numberOfRowInSectionSimilarVenue() -> Int {
+        return similarVenues.count
     }
 }
 

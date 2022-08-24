@@ -54,4 +54,25 @@ class DetailService {
             }
         }
     }
+
+    func getSimilarVenues(id: String, completion: @escaping Completion<[SimilarVenue]>) {
+        let urlString = Api.Path.detailURL + id + Api.Path.similarURL
+        api.request(method: .get, urlString: urlString, parameters: params) { result in
+            switch result {
+            case .success(let data):
+                if let data = data as? JSObject,
+                   let response = data["response"] as? JSObject,
+                   let similarVenues = response["similarVenues"] as? JSObject,
+                   let items = similarVenues["items"] as? JSArray {
+                    var venue: [SimilarVenue] = []
+                    venue = Mapper<SimilarVenue>().mapArray(JSONArray: items)
+                    completion(.success(venue))
+                } else {
+                    completion(.failure(Api.Error.json))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }
