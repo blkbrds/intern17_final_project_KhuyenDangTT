@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUtils
 
 final class DetailViewController: UIViewController {
 
@@ -180,6 +181,24 @@ extension DetailViewController: UITableViewDelegate {
         detailVC.viewModel = DetailViewModel(id: viewModel.viewModelForItemSimilarVenue(at: indexPath).similarVenue.id )
         navigationController?.pushViewController(detailVC, animated: true)
     }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: kScreenSize.width, height: Config.heightOfHeader)))
+        headerView.backgroundColor = .white
+        let backgroundView = UIView(frame: headerView.frame)
+        backgroundView.backgroundColor = #colorLiteral(red: 0.3725490196, green: 0.5843137255, blue: 0.3647058824, alpha: 1).withAlphaComponent(0.8)
+        headerView.addSubview(backgroundView)
+        let headerLabel = UILabel(frame: CGRect(origin: CGPoint(x: Config.xLabel, y: Config.yHeader), size: CGSize(width: kScreenSize.width, height: Config.heightOfHeader)))
+        headerLabel.text = "Similar Venues"
+        headerLabel.textColor = .white
+        headerLabel.font = .systemFont(ofSize: Config.sizeOfLabelHeader)
+        headerView.addSubview(headerLabel)
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return Config.heightOfHeader
+    }
 }
 
 // MARK: Config
@@ -191,5 +210,9 @@ extension DetailViewController {
         static let totalStar: String = "/10"
         static let favoritedImage: String = "favorited"
         static let favoriteImage: String = "favorite"
+        static let heightOfHeader: CGFloat = 40
+        static let xLabel: CGFloat = 20
+        static let yHeader: CGFloat = 0
+        static let sizeOfLabelHeader: CGFloat = 22
     }
 }
