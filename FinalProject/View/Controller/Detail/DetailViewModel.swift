@@ -40,24 +40,13 @@ final class DetailViewModel {
         }
     }
 
-    // MARK: - Detail
-    func getDetailById(completion: @escaping APICompletion) {
-        DetailService.shared().getDetailVenueById(id: id) { [weak self] result in
-            guard let this = self else { return }
-            switch result {
-            case .success(let detailVenue):
-                this.detailVenue = detailVenue
-                completion(.success)
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
     func showAddress() -> String {
         var address: String = ""
-        for index in 0..<(detailVenue?.location?.formattedAddress.count ?? 0) {
-            address += (detailVenue?.location?.formattedAddress[index] ?? "") + " "
+        guard let formattedAddress = detailVenue?.location?.formattedAddress else {
+            return ""
+        }
+        for index in 0..<formattedAddress.count {
+            address += formattedAddress[index] + " "
         }
         return address + Config.seeMap
     }
@@ -75,7 +64,22 @@ final class DetailViewModel {
         return DetailCellViewModel(photoItem: photoItem[indexPath.row])
     }
 
-    // MARK: - Favorite
+    func viewModelForItemSimilarVenue(at indexPath: IndexPath) -> SimilarCellViewModel {
+        return SimilarCellViewModel(similarVenue: similarVenues[indexPath.row])
+    }
+
+    func numberOfRowInSectionSimilarVenue() -> Int {
+        return similarVenues.count
+    }
+
+    func getIdSimilarVenue(at indexPath: IndexPath) -> String {
+        return similarVenues[indexPath.row].id
+    }
+}
+
+// MARK: - Reaml
+extension DetailViewModel {
+
     func isFavorite() -> Bool {
         do {
             let realm = try Realm()
@@ -113,8 +117,11 @@ final class DetailViewModel {
             print(error)
         }
     }
+}
 
-    // MARK: - Similar
+// MARK: - API
+extension DetailViewModel {
+
     func getSimilarVenue(completion: @escaping APICompletion) {
         DetailService.shared().getSimilarVenues(id: id) { [weak self] result in
             guard let this = self else { return }
@@ -130,19 +137,26 @@ final class DetailViewModel {
             }
         }
     }
-
-    func viewModelForItemSimilarVenue(at indexPath: IndexPath) -> SimilarCellViewModel {
-        return SimilarCellViewModel(similarVenue: similarVenues[indexPath.row])
-    }
-
-    func numberOfRowInSectionSimilarVenue() -> Int {
-        return similarVenues.count
+    
+    func getDetailById(completion: @escaping APICompletion) {
+        DetailService.shared().getDetailVenueById(id: id) { [weak self] result in
+            guard let this = self else { return }
+            switch result {
+            case .success(let detailVenue):
+                this.detailVenue = detailVenue
+                completion(.success)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
 
+// MARK: - Config
 extension DetailViewModel {
 
     struct Config {
         static let seeMap: String = " (See map...)"
     }
 }
+

@@ -53,11 +53,6 @@ final class HomeViewController: UIViewController {
 
     // MARK: - Private func
     private func configUI() {
-        if let viewModel = viewModel {
-            titleLabel.text = Config.title + viewModel.getCity()
-        } else {
-            titleLabel.text = Config.title
-        }
         avatarImageView.layer.borderColor = Config.borderColorOfAvatarImage
         avatarImageView.layer.borderWidth = Config.borderWidthOfAvatarImage
         avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2

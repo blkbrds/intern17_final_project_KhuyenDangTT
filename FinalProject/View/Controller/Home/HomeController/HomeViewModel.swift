@@ -55,6 +55,27 @@ final class HomeViewModel {
         return type.height
     }
 
+    func viewModelForRecommend() -> RecommendTableViewViewModel {
+        return RecommendTableViewViewModel(recommendVenues: recommendVenues)
+    }
+
+    func viewModelForNear() -> NearViewModel {
+        return NearViewModel(nearVenues: nearVenues)
+    }
+
+    func viewModelForOpenning() -> OpenningViewModel {
+        return OpenningViewModel(openningVenues: openningVenues, isFull: isFull)
+    }
+
+    func viewModelForDetail(at indexPath: IndexPath) -> DetailViewModel {
+        return DetailViewModel(id: recommendVenues[indexPath.row].venue?.id ?? "")
+    }
+}
+
+// MARK: - API
+
+extension HomeViewModel {
+    
     func getNearVenues(completion: @escaping APICompletion) {
         guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
             completion(.failure(Errors.initFailure))
@@ -140,32 +161,5 @@ final class HomeViewModel {
                 }
             }
         }
-    }
-
-    func getCity() -> String {
-        var result: String = ""
-        guard let cordinate = LocationManager.shared().currentLocation?.coordinate else { return "" }
-        let location = CLLocation(latitude: cordinate.latitude, longitude: cordinate.longitude)
-        location.placemark { placemark, _ in
-            guard let placemark = placemark else { return }
-            result = placemark.city ?? ""
-        }
-        return result
-    }
-
-    func viewModelForRecommend() -> RecommendTableViewViewModel {
-        return RecommendTableViewViewModel(recommendVenues: recommendVenues)
-    }
-
-    func viewModelForNear() -> NearViewModel {
-        return NearViewModel(nearVenues: nearVenues)
-    }
-
-    func viewModelForOpenning() -> OpenningViewModel {
-        return OpenningViewModel(openningVenues: openningVenues, isFull: isFull)
-    }
-
-    func viewModelForDetail(at indexPath: IndexPath) -> DetailViewModel {
-        return DetailViewModel(id: recommendVenues[indexPath.row].venue?.id ?? "")
     }
 }

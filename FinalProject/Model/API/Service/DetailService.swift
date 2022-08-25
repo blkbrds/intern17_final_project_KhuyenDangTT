@@ -12,7 +12,7 @@ import ObjectMapper
 class DetailService {
 
     // MARK: - Properties
-    static var sharedInstance: DetailService = {
+    private static var sharedInstance: DetailService = {
         let shareDetailService = DetailService()
         return shareDetailService
     }()
@@ -43,7 +43,8 @@ class DetailService {
                    let response = data["response"] as? JSObject,
                    let venue = response["venue"] as? JSObject {
                     guard let detailVenue = Mapper<DetailVenue>().map(JSONObject: venue) else {
-                        return completion(.failure(Api.Error.json))
+                        completion(.failure(Api.Error.json))
+                        return
                     }
                     completion(.success(detailVenue))
                 } else {
