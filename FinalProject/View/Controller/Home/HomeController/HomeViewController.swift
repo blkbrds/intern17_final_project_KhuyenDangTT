@@ -9,11 +9,22 @@
 import UIKit
 import CoreLocation
 
+// MARK: - Protocol
+protocol HomeViewControllerDelegate: AnyObject {
+    func controller(_ controller: HomeViewController, needPerformAction action: HomeViewController.Action )
+}
+
 final class HomeViewController: UIViewController {
+
+    // MARK: - Enum
+    enum Action {
+        case passIdDetail(id: String)
+    }
 
     // MARK: - IBOutlets
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var titleLabel: UILabel!
 
     // MARK: - Properties
     var viewModel: HomeViewModel?
@@ -22,13 +33,15 @@ final class HomeViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configUI()
         configUIRecommendTableView()
         LocationManager.shared().startUpdating { [weak self] _ in
             guard let this = self else { return }
-            this.setupDataRecommend()
-            this.setupDataNear()
-            this.setupDataOpenning()
+            DispatchQueue.main.async {
+                this.configUI()
+                this.setupDataRecommend()
+                this.setupDataNear()
+                this.setupDataOpenning()
+            }
         }
     }
 
@@ -64,7 +77,8 @@ final class HomeViewController: UIViewController {
             guard let this = self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case .success:
+                case .success(let city):
+                    this.titleLabel.text = city
                     this.tableView.reloadRows(at: [IndexPath(row: TypeRow.recommend.rawValue, section: Config.section)], with: .fade)
                 case .failure(let error):
                     this.alert(msg: error.localizedDescription, handler: nil)
@@ -184,8 +198,9 @@ extension HomeViewController: OpeningTableViewCellDelegate {
         switch action {
         case .loadMore:
             loadMore(for: cell)
-        case .showDetail:
+        case .showDetail(let id):
             let detailVC = DetailViewController()
+            detailVC.viewModel = DetailViewModel(id: id)
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
@@ -195,8 +210,9 @@ extension HomeViewController: OpeningTableViewCellDelegate {
 extension HomeViewController: RecommendTableViewCellDelegate {
     func cell(_ cell: RecommendTableViewCell, needPerformAction action: RecommendTableViewCell.Action) {
         switch action {
-        case .showDetail:
+        case .showDetail(let id):
             let detailVC = DetailViewController()
+            detailVC.viewModel = DetailViewModel(id: id)
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
@@ -206,8 +222,9 @@ extension HomeViewController: RecommendTableViewCellDelegate {
 extension HomeViewController: NearTableViewCellDelegate {
     func cell(_ cell: NearTableViewCell, needPerformAction action: NearTableViewCell.Action) {
         switch action {
-        case .showDetail:
+        case .showDetail(let id):
             let detailVC = DetailViewController()
+            detailVC.viewModel = DetailViewModel(id: id)
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }

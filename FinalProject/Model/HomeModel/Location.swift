@@ -8,7 +8,7 @@
 
 import ObjectMapper
 
-class Location: Mappable {
+final class Location: Mappable {
 
     var address: String?
     var lat: Double?
@@ -18,8 +18,6 @@ class Location: Mappable {
 
     required init?(map: Map) { }
 
-    init() {}
-
     func mapping(map: Map) {
         address <- map["address"]
         lat <- map["lat"]
@@ -27,5 +25,4 @@ class Location: Mappable {
         distance <- map["distance"]
         contextLine <- map["contextLine"]
     }
-
 }

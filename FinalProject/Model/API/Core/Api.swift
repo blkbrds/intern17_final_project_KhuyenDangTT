@@ -13,6 +13,8 @@ final class Api {
 
     struct Path {
         static let baseURL = "https://api.foursquare.com/v2/venues/explore"
+        static let detailURL = "https://api.foursquare.com/v2/venues/"
+        static let similarURL = "/similar"
     }
 
     struct Params {

@@ -16,10 +16,9 @@ final class RecommendTableViewCell: UITableViewCell {
 
     // MARK: - Enum
     enum Action {
-
-        case showDetail
+        case showDetail(id: String)
     }
-    
+
     // MARK: - IBOutlets
     @IBOutlet private weak var collectionView: UICollectionView!
 
@@ -76,17 +75,17 @@ extension RecommendTableViewCell: UICollectionViewDelegateFlowLayout {
 // MARK: - UICollectionViewDelegate
 extension RecommendTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.cell(self, needPerformAction: .showDetail)
+        delegate?.cell(self, needPerformAction: .showDetail(id: viewModel?.getIdRecommendVenue(at: indexPath) ?? ""))
     }
 }
 
 // MARK: - Config
 extension RecommendTableViewCell {
-    
+
     struct Config {
         static let minimumLineSpacingForSection: CGFloat = 20
         static let widthOfItem: CGFloat = (UIScreen.main.bounds.width - 30) * 2 / 3
-        static let heightOfItem: CGFloat = UIScreen.main.bounds.height / 5.5
+        static let heightOfItem: CGFloat = UIScreen.main.bounds.width / 2.4
         static let topContenInset: CGFloat = 0
         static let bottomContenInset: CGFloat = 0
         static let leftContenInset: CGFloat = 20

@@ -28,7 +28,12 @@ final class OpenningViewModel {
         guard indexPath.row < openningVenues.count else { return false }
         return indexPath.row == openningVenues.count - 4 && !isFull
     }
+
     func viewModelForItem(at indexPath: IndexPath) -> RecommendViewModel {
         return RecommendViewModel(recommendVenue: openningVenues[indexPath.row])
+    }
+
+    func getIdOpenningVenue(at indexPath: IndexPath) -> String {
+        return openningVenues[indexPath.row].venue?.id ?? ""
     }
 }

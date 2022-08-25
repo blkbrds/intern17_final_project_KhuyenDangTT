@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol OpeningTableViewCellDelegate: AnyObject  {
+// MARK: - Protocol
+protocol OpeningTableViewCellDelegate: AnyObject {
     func cell(_ cell: OpeningTableViewCell, needPerformAction action: OpeningTableViewCell.Action )
 }
 
@@ -17,7 +18,7 @@ final class OpeningTableViewCell: UITableViewCell {
     // MARK: - Enum
     enum Action {
         case loadMore
-        case showDetail
+        case showDetail(id: String)
     }
 
     // MARK: - IBOulets
@@ -87,7 +88,7 @@ extension OpeningTableViewCell: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.cell(self, needPerformAction: .showDetail)
+        delegate?.cell(self, needPerformAction: .showDetail(id: viewModel?.getIdOpenningVenue(at: indexPath) ?? ""))
     }
 }
 
@@ -98,7 +99,7 @@ extension OpeningTableViewCell {
         static let minimumLineSpacingForSection: CGFloat = 20
         static let minimumInteritemSpacingForSection: CGFloat = 20
         static let widthOfItem: CGFloat = (UIScreen.main.bounds.width - 60) / 2
-        static let heightOfItem: CGFloat = UIScreen.main.bounds.height / 5.5
+        static let heightOfItem: CGFloat = UIScreen.main.bounds.width / 2.5
         static let topContenInset: CGFloat = 20
         static let bottomContenInset: CGFloat = 0
         static let leftContenInset: CGFloat = 20

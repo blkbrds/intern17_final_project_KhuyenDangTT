@@ -29,7 +29,7 @@ extension UIImageView {
                     if let data = data {
                         let image = UIImage(data: data)
                         completion(image)
-                    } else{
+                    } else {
                         completion(nil)
                     }
                 }
