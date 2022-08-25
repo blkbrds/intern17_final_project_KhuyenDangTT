@@ -30,11 +30,10 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recommend" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJi-69-wsU">
                         <rect key="frame" x="20" y="0.0" width="300" height="21"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="highlightedColor" red="0.13725490196078433" green="0.047058823529411764" blue="0.0039215686274509803" alpha="0.94772046232876717" colorSpace="custom" customColorSpace="sRGB"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" red="0.1389365494" green="0.047114260489999997" blue="0.0042090928180000004" alpha="0.95422196061643838" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="MfJ-N5-y2q" secondAttribute="bottom" id="K4g-eB-uvQ"/>
                     <constraint firstItem="MfJ-N5-y2q" firstAttribute="top" secondItem="NJi-69-wsU" secondAttribute="bottom" id="LoP-Yb-gkY"/>

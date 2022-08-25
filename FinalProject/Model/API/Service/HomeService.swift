@@ -65,22 +65,8 @@ class HomeService {
         }
     }
 
-    // MARK: - Properties
-    static var shareInstance: HomeService = {
-        let shareHomeService = HomeService()
-        return shareHomeService
-    }()
-
-    // MARK: - Private init()
-    private init() { }
-
-    // MARK: - Class func
-    class func shared() -> HomeService {
-        return shareInstance
-    }
-
     // MARK: - Public func
-    func getVenues(params: Param, completion: @escaping Completion<[RecommendVenue]>) {
+    static func getVenues(params: Param, completion: @escaping Completion<[RecommendVenue]>) {
         let urlString = Api.Path.baseURL
         api.request(method: .get, urlString: urlString, parameters: params.toJSON()) { result in
             switch result {

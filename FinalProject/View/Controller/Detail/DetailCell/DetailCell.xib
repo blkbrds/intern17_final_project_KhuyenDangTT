@@ -18,40 +18,27 @@
                 <rect key="frame" x="0.0" y="0.0" width="265" height="150"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f4z-jl-j75">
-                        <rect key="frame" x="3" y="3" width="259" height="144"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HNr-qe-E7o">
-                                <rect key="frame" x="0.0" y="0.0" width="259" height="144"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="HNr-qe-E7o" secondAttribute="trailing" id="fde-yN-dBx"/>
-                            <constraint firstItem="HNr-qe-E7o" firstAttribute="top" secondItem="f4z-jl-j75" secondAttribute="top" id="q2w-XI-vMS"/>
-                            <constraint firstAttribute="bottom" secondItem="HNr-qe-E7o" secondAttribute="bottom" id="yXq-Dc-ygu"/>
-                            <constraint firstItem="HNr-qe-E7o" firstAttribute="leading" secondItem="f4z-jl-j75" secondAttribute="leading" id="ynJ-oE-QvX"/>
-                        </constraints>
-                    </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HNr-qe-E7o">
+                        <rect key="frame" x="0.0" y="0.0" width="265" height="150"/>
+                        <color key="backgroundColor" systemColor="systemGray3Color"/>
+                    </imageView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="f4z-jl-j75" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="3" id="258-mW-EeF"/>
-                <constraint firstAttribute="trailing" secondItem="f4z-jl-j75" secondAttribute="trailing" constant="3" id="FpE-wR-06e"/>
-                <constraint firstItem="f4z-jl-j75" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="3" id="Y0d-Am-TCv"/>
-                <constraint firstAttribute="bottom" secondItem="f4z-jl-j75" secondAttribute="bottom" constant="3" id="cWr-qS-v1n"/>
+                <constraint firstItem="HNr-qe-E7o" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="A0p-UL-E60"/>
+                <constraint firstAttribute="bottom" secondItem="HNr-qe-E7o" secondAttribute="bottom" id="OWy-B8-dZp"/>
+                <constraint firstItem="HNr-qe-E7o" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="gci-aP-8a6"/>
+                <constraint firstAttribute="trailing" secondItem="HNr-qe-E7o" secondAttribute="trailing" id="kQs-3I-boD"/>
             </constraints>
             <size key="customSize" width="265" height="150"/>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                    <real key="value" value="20"/>
+                    <real key="value" value="0.0"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
-                <outlet property="containerView" destination="f4z-jl-j75" id="L7t-yg-Ouv"/>
                 <outlet property="detailImageView" destination="HNr-qe-E7o" id="06S-BS-8TN"/>
             </connections>
             <point key="canvasLocation" x="296.37681159420293" y="141.96428571428569"/>

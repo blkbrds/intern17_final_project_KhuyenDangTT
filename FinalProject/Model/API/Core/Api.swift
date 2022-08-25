@@ -16,6 +16,7 @@ final class Api {
         static let detailURL = "https://api.foursquare.com/v2/venues/"
         static let searchURL = "https://api.foursquare.com/v2/venues/search"
         static let categoryURL = "https://api.foursquare.com/v2/venues/categories"
+        static let similarURL = "/similar"
     }
 
     struct Params {

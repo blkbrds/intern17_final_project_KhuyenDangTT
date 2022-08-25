@@ -55,6 +55,27 @@ final class HomeViewModel {
         return type.height
     }
 
+    func viewModelForRecommend() -> RecommendTableViewViewModel {
+        return RecommendTableViewViewModel(recommendVenues: recommendVenues)
+    }
+
+    func viewModelForNear() -> NearViewModel {
+        return NearViewModel(nearVenues: nearVenues)
+    }
+
+    func viewModelForOpenning() -> OpenningViewModel {
+        return OpenningViewModel(openningVenues: openningVenues, isFull: isFull)
+    }
+
+    func viewModelForDetail(at indexPath: IndexPath) -> DetailViewModel {
+        return DetailViewModel(id: recommendVenues[indexPath.row].venue?.id ?? "")
+    }
+}
+
+// MARK: - API
+
+extension HomeViewModel {
+
     func getNearVenues(completion: @escaping APICompletion) {
         guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
             completion(.failure(Errors.initFailure))
@@ -62,8 +83,8 @@ final class HomeViewModel {
         }
         let ll: String = "\(cordinate.latitude), \(cordinate.longitude)"
         let params = HomeService.Param(ll: ll, limit: limit, radius: radius, query: Config.query)
-        HomeService.shared().getVenues(params: params) { [weak self] result in
-            guard let this = self else { return completion(.failure(Api.Error.json)) }
+        HomeService.getVenues(params: params) { [weak self] result in
+            guard let this = self else { return }
             switch result {
             case .success(let nearVenues):
                 for venue in nearVenues {
@@ -77,7 +98,7 @@ final class HomeViewModel {
         }
     }
 
-    func getRecommendVenues(completion: @escaping APICompletion) {
+    func getRecommendVenues(completion: @escaping Completion<String>) {
         guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
             completion(.failure(Errors.initFailure))
             return
@@ -89,7 +110,7 @@ final class HomeViewModel {
                 return
             }
             let params = HomeService.Param(limit: self.limit, near: placemark.city, query: Config.query)
-            HomeService.shared().getVenues(params: params) { [weak self] result in
+            HomeService.getVenues(params: params) { [weak self] result in
                 guard let this = self else { return completion(.failure(Api.Error.json)) }
                 switch result {
                 case .success(let recommendVenues):
@@ -97,7 +118,7 @@ final class HomeViewModel {
                         venue.image = this.randomImage()
                     }
                     this.recommendVenues = recommendVenues
-                    completion(.success)
+                    completion(.success(Define.title + (placemark.city ?? "")))
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -118,8 +139,8 @@ final class HomeViewModel {
                 return
             }
             let params = HomeService.Param(limit: self.limit, near: placemark.city, openNow: true, offset: offset, query: Config.query)
-            HomeService.shared().getVenues(params: params) { [weak self] result in
-                guard let this = self else { return completion(.failure(Api.Error.json)) }
+            HomeService.getVenues(params: params) { [weak self] result in
+                guard let this = self else { return }
                 switch result {
                 case .success(let openningVenues):
                     for venue in openningVenues {
@@ -141,21 +162,12 @@ final class HomeViewModel {
             }
         }
     }
+}
 
-    func viewModelForRecommend() -> RecommendTableViewViewModel {
-        return RecommendTableViewViewModel(recommendVenues: recommendVenues)
-    }
-
-    func viewModelForNear() -> NearViewModel {
-        return NearViewModel(nearVenues: nearVenues)
-    }
-
-    func viewModelForOpenning() -> OpenningViewModel {
-        return OpenningViewModel(openningVenues: openningVenues, isFull: isFull)
-    }
-
-    func viewModelForDetail(at indexPath: IndexPath) -> DetailViewModel {
-        return DetailViewModel(id: recommendVenues[indexPath.row].venue?.id ?? "")
+extension HomeViewModel {
+    
+    struct Define {
+        static let title: String = "Find the best coffee \nfor you in "
     }
 }
 
