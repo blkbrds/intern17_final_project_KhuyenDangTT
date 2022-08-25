@@ -49,7 +49,7 @@ final class SearchViewController: UIViewController {
             tableView.reloadData()
         }
     }
-    
+
     // MARK: - Private func
     private func getHistoryVenue() {
         guard let viewModel = viewModel else { return }
@@ -115,7 +115,7 @@ final class SearchViewController: UIViewController {
         searchBar.resignFirstResponder()
         viewModel.query = searchText
         search()
-        widthFilterButtonConstraint.constant = 25
+        widthFilterButtonConstraint.constant = Config.widthOfFilterButton
 
     }
 }
@@ -174,7 +174,7 @@ extension SearchViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         viewModel.query = searchBar.text ?? ""
         search()
-        widthFilterButtonConstraint.constant = 25
+        widthFilterButtonConstraint.constant = Config.widthOfFilterButton
     }
 }
 
@@ -203,8 +203,7 @@ extension SearchViewController: SearchCellDelegate {
                 return
             }
             viewModel.id = id
-            viewModel.deleteHistory()
-            viewModel.searchVenues.remove(at: indexPath.row)
+            viewModel.deleteHistory(at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
             updateUI(isNeedReloadTableView: false)
         }
@@ -216,5 +215,6 @@ extension SearchViewController {
 
     struct Config {
         static let heightForRow: CGFloat = 100
+        static let widthOfFilterButton: CGFloat = 25
     }
 }

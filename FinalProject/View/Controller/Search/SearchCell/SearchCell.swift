@@ -8,6 +8,7 @@
 
 import UIKit
 
+// MARK: - Protocol
 protocol SearchCellDelegate: AnyObject {
     func cell(_ cell: SearchCell, needPerformAction action: SearchCell.Action)
 }
@@ -25,7 +26,7 @@ final class SearchCell: UITableViewCell {
     @IBOutlet private weak var distanceLabel: UILabel!
     @IBOutlet private weak var photoImageView: UIImageView!
     @IBOutlet private weak var deleteHistoryButton: UIButton!
-    
+
     // MARK: - Properties
     var viewModel: SearchCellViewModel? {
         didSet {

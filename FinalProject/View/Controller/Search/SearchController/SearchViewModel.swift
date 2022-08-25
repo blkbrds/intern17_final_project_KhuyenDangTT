@@ -46,7 +46,6 @@ final class SearchViewModel {
     }
 }
 
-
 // MARK: Realm
 extension SearchViewModel {
 
@@ -87,13 +86,14 @@ extension SearchViewModel {
         }
     }
 
-    func deleteHistory() {
+    func deleteHistory(at indexPath: IndexPath) {
         do {
             let realm = try Realm()
             let result = realm.objects(SearchVenue.self).first(where: { $0.id == id })
             if let object = result {
                 try realm.write {
                     realm.delete(object)
+                    searchVenues.remove(at: indexPath.row)
                 }
             }
         } catch {

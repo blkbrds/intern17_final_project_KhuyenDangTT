@@ -7,7 +7,8 @@
 //
 
 import Foundation
-class CategoryCellViewModel {
+
+final class CategoryCellViewModel {
 
     var category: Category
 
