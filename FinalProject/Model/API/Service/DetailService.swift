@@ -17,10 +17,13 @@ class DetailService {
         return shareDetailService
     }()
 
-    let params: JSObject = [
-        "client_id": HomeService.HomeParam.clientID,
-        "client_secret": HomeService.HomeParam.clientSecret,
-        "v": HomeService.HomeParam.version ]
+    var params: [String: Any] {
+        var json: [String: Any] = [:]
+        json["client_id"] = Api.Params.clientID
+        json["client_secret"] = Api.Params.clientSecret
+        json["v"] = Api.Params.version
+        return json
+    }
 
     // MARK: - Class func
     class func shared() -> DetailService {
@@ -32,7 +35,7 @@ class DetailService {
 
     // MARK: - Public func
     func getDetailVenueById(id: String, completion: @escaping Completion<DetailVenue>) {
-        let urlString = "https://api.foursquare.com/v2/venues/" + id
+        let urlString = Api.Path.detailURL + id
         api.request(method: .get, urlString: urlString, parameters: params) { result in
             switch result {
             case .success(let data):

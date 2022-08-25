@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 // MARK: - Enum
 enum TypeRow: Int, CaseIterable {
@@ -14,14 +15,15 @@ enum TypeRow: Int, CaseIterable {
     case near
     case openning
 
-    var title: String {
+    var height: Float {
         switch self {
         case .recommend:
-            return "Recommend"
+            return 210
         case .near:
-            return "Nearly"
+            return 200
         case .openning:
-            return "Openning"
+            return 970
+
         }
     }
 }
@@ -31,7 +33,16 @@ final class HomeViewModel {
     // MARK: - Properties
     private var recommendVenues: [RecommendVenue] = []
     private var nearVenues: [RecommendVenue] = []
-    private var openningVenues: [RecommendVenue] = []
+    private (set) var openningVenues: [RecommendVenue] = []
+    private var limit: Int = 10
+    private var radius: Int = 1_000
+    private var isFull: Bool = false
+
+    // MARK: - Private func
+    private func randomImage() -> String {
+        let index = Int.random(min: 1, max: 13)
+        return "coffee\(index)"
+    }
 
     // MARK: - Public func
     func numberOfRowInSection() -> Int {
@@ -42,34 +53,23 @@ final class HomeViewModel {
         guard let type = TypeRow(rawValue: indexPath.row) else {
             return 0.0
         }
-        switch type {
-        case .recommend:
-            return Config.heightRowOfRecommend
-        case .near:
-            return Config.heightRowOfNear
-        case .openning:
-            return Config.heightRowOfOpenning
-        }
-    }
-
-    func getRecommendVenues(completion: @escaping APICompletion) {
-        HomeService.shared().getRecommendVenues { [weak self] result in
-            guard let this = self else { return }
-            switch result {
-            case .success(let recommendVenues):
-                this.recommendVenues = recommendVenues
-                completion(.success)
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        return type.height
     }
 
     func getNearVenues(completion: @escaping APICompletion) {
-        HomeService.shared().getNearVenues { [weak self] result in
+        guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
+            completion(.failure(Errors.initFailure))
+            return
+        }
+        let ll: String = "\(cordinate.latitude), \(cordinate.longitude)"
+        let params = HomeService.Param(ll: ll, limit: limit, radius: radius)
+        HomeService.shared().getVenues(params: params) { [weak self] result in
             guard let this = self else { return }
             switch result {
             case .success(let nearVenues):
+                for venue in nearVenues {
+                    venue.image = this.randomImage()
+                }
                 this.nearVenues = nearVenues
                 completion(.success)
             case .failure(let error):
@@ -78,15 +78,67 @@ final class HomeViewModel {
         }
     }
 
-    func getOpenningVenues(limit: Int, completion: @escaping APICompletion) {
-        HomeService.shared().getOpenningVenues(limit: limit) { [weak self] result in
-            guard let this = self else { return }
-            switch result {
-            case .success(let openningVenues):
-                this.openningVenues.append(contentsOf: openningVenues)
-                completion(.success)
-            case .failure(let error):
-                completion(.failure(error))
+    func getRecommendVenues(completion: @escaping APICompletion) {
+        guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
+            completion(.failure(Errors.initFailure))
+            return
+        }
+        let location = CLLocation(latitude: cordinate.latitude, longitude: cordinate.longitude)
+        location.placemark { placemark, error in
+            guard let placemark = placemark else {
+                completion(.failure(Errors.initFailure))
+                return
+            }
+            let params = HomeService.Param(limit: self.limit, near: placemark.city)
+            HomeService.shared().getVenues(params: params) { [weak self] result in
+                guard let this = self else { return }
+                switch result {
+                case .success(let recommendVenues):
+                    for venue in recommendVenues {
+                        venue.image = this.randomImage()
+                    }
+                    this.recommendVenues = recommendVenues
+                    completion(.success)
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    func getOpenningVenues(isLoadMore: Bool, completion: @escaping APICompletion) {
+        guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
+            completion(.failure(Errors.initFailure))
+            return
+        }
+        let offset: Int = openningVenues.count
+        let location = CLLocation(latitude: cordinate.latitude, longitude: cordinate.longitude)
+        location.placemark { placemark, error in
+            guard let placemark = placemark else {
+                completion(.failure(Errors.initFailure))
+                return
+            }
+            let params = HomeService.Param(limit: self.limit, near: placemark.city, openNow: true, offset: offset)
+            HomeService.shared().getVenues(params: params) { [weak self] result in
+                guard let this = self else { return }
+                switch result {
+                case .success(let openningVenues):
+                    for venue in openningVenues {
+                        venue.image = this.randomImage()
+                    }
+                    if isLoadMore {
+                        this.openningVenues.append(contentsOf: openningVenues)
+                        if openningVenues.count < this.limit {
+                            this.isFull = true
+                        }
+                    } else {
+                        this.openningVenues = openningVenues
+                        this.isFull = false
+                    }
+                    completion(.success)
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -100,20 +152,10 @@ final class HomeViewModel {
     }
 
     func viewModelForOpenning() -> OpenningViewModel {
-        return OpenningViewModel(openningVenues: openningVenues)
+        return OpenningViewModel(openningVenues: openningVenues, isFull: isFull)
     }
 
     func viewModelForDetail(at indexPath: IndexPath) -> DetailViewModel {
         return DetailViewModel(id: recommendVenues[indexPath.row].venue?.id ?? "")
-    }
-}
-
-// MARK: - HomeViewModel
-extension HomeViewModel {
-
-    struct Config {
-        static let heightRowOfRecommend: Float = 210
-        static let heightRowOfNear: Float = 200
-        static let heightRowOfOpenning: Float = 970
     }
 }

@@ -46,14 +46,14 @@ final class DetailViewController: UIViewController {
         viewModel.getDetailById { [weak self] result in
             HUD.dismiss()
             guard let this = self else { return }
-            switch result {
-            case .success:
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
                     this.updateUI()
                     this.collectionView.reloadData()
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
                 }
-            case .failure(let error):
-                this.alert(msg: error.localizedDescription, handler: nil)
             }
         }
     }
@@ -81,7 +81,7 @@ final class DetailViewController: UIViewController {
         guard let viewModel = viewModel else { return }
         nameLabel.text = viewModel.detailVenue?.name
         ratingLabel.text = String(viewModel.detailVenue?.rating ?? 0) + Config.totalStar
-        seeMapButton.setTitle( viewModel.showAddress(), for: .normal)
+        seeMapButton.setTitle(viewModel.showAddress(), for: .normal)
         priceLabel.text = "Price: " + String(viewModel.detailVenue?.price?.tier ?? 0) + (viewModel.detailVenue?.price?.currency ?? "")
         likeLabel.text = viewModel.detailVenue?.like?.summary ?? ""
         for star in starImageView where star.tag > viewModel.numberOfRating() {
