@@ -99,7 +99,7 @@ extension OpeningTableViewCell {
         static let minimumLineSpacingForSection: CGFloat = 20
         static let minimumInteritemSpacingForSection: CGFloat = 20
         static let widthOfItem: CGFloat = (UIScreen.main.bounds.width - 60) / 2
-        static let heightOfItem: CGFloat = UIScreen.main.bounds.height / 5.5
+        static let heightOfItem: CGFloat = UIScreen.main.bounds.width / 2.5
         static let topContenInset: CGFloat = 20
         static let bottomContenInset: CGFloat = 0
         static let leftContenInset: CGFloat = 20
