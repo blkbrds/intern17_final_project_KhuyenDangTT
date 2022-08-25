@@ -17,8 +17,9 @@ class FavoriteCellViewModel {
 
     func showAddress() -> String {
         var address: String = ""
-        for index in 0..<(favoriteVenue.location?.formattedAddressList.count ?? 0) {
-            address += (favoriteVenue.location?.formattedAddressList[index] ?? "") + " "
+        guard let formattedAddress = favoriteVenue.location?.formattedAddressList else { return address }
+        for index in 0..<formattedAddress.count {
+            address += formattedAddress[index] + " "
         }
         return address
     }

@@ -25,7 +25,8 @@ final class FavoriteCell: UITableViewCell {
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var addressLabel: UILabel!
     @IBOutlet private weak var photoImageView: UIImageView!
-
+    @IBOutlet private weak var reviewLabel: UILabel!
+    
     // MARK: - Properties
     var viewModel: FavoriteCellViewModel? {
         didSet {
@@ -48,6 +49,7 @@ final class FavoriteCell: UITableViewCell {
         }
         nameLabel.text = viewModel.favoriteVenue.name
         addressLabel.text = viewModel.showAddress()
+        reviewLabel.text = "\(viewModel.favoriteVenue.rating) ⭐️"
     }
 
     // MARK: - IBActions

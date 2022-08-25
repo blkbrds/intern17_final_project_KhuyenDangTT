@@ -76,14 +76,14 @@ extension FavoriteViewController: UITableViewDataSource {
 extension FavoriteViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return Config.heightItem
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let viewModel = viewModel else { return }
         let detailVC = DetailViewController()
-        detailVC.viewModel = DetailViewModel(id: viewModel.favoriteVenues[indexPath.row].id ?? "")
+        detailVC.viewModel = DetailViewModel(id: viewModel.getId(at: indexPath))
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
@@ -97,9 +97,15 @@ extension FavoriteViewController: FavoriteCellDelegate {
             guard let viewModel = viewModel else {
                 return
             }
-            viewModel.deleteFavoriteVenue(id: id)
-            viewModel.favoriteVenues.remove(at: indexPath.row)
+            viewModel.deleteFavoriteVenue(id: id, at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+}
+
+extension FavoriteViewController {
+    
+    struct Config {
+        static let heightItem: CGFloat = 100
     }
 }

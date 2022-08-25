@@ -27,13 +27,14 @@ final class FavoriteViewModel {
         }
     }
 
-    func deleteFavoriteVenue(id: String) {
+    func deleteFavoriteVenue(id: String, at indexPath: IndexPath) {
         do {
             let realm = try Realm()
             let result = realm.objects(DetailVenue.self).first(where: { $0.id == id })
             if let object = result {
                 try realm.write {
                     realm.delete(object)
+                    favoriteVenues.remove(at: indexPath.row )
                 }
             }
         } catch {
@@ -47,5 +48,9 @@ final class FavoriteViewModel {
 
     func viewModelForItem(at indexPath: IndexPath) -> FavoriteCellViewModel {
         return FavoriteCellViewModel(favoriteVenue: favoriteVenues[indexPath.row])
+    }
+
+    func getId(at indexPath: IndexPath) -> String {
+        return favoriteVenues[indexPath.row].id ?? ""
     }
 }
