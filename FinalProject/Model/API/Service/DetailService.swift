@@ -12,12 +12,7 @@ import ObjectMapper
 class DetailService {
 
     // MARK: - Properties
-    private static var sharedInstance: DetailService = {
-        let shareDetailService = DetailService()
-        return shareDetailService
-    }()
-
-    var params: [String: Any] {
+    static var params: [String: Any] {
         var json: [String: Any] = [:]
         json["client_id"] = Api.Params.clientID
         json["client_secret"] = Api.Params.clientSecret
@@ -25,16 +20,8 @@ class DetailService {
         return json
     }
 
-    // MARK: - Class func
-    class func shared() -> DetailService {
-        return sharedInstance
-    }
-
-    // MARK: - Private init()
-    private init() {}
-
     // MARK: - Public func
-    func getDetailVenueById(id: String, completion: @escaping Completion<DetailVenue>) {
+    static func getDetailVenueById(id: String, completion: @escaping Completion<DetailVenue>) {
         let urlString = Api.Path.detailURL + id
         api.request(method: .get, urlString: urlString, parameters: params) { result in
             switch result {
@@ -56,7 +43,7 @@ class DetailService {
         }
     }
 
-    func getSimilarVenues(id: String, completion: @escaping Completion<[SimilarVenue]>) {
+    static func getSimilarVenues(id: String, completion: @escaping Completion<[SimilarVenue]>) {
         let urlString = Api.Path.detailURL + id + Api.Path.similarURL
         api.request(method: .get, urlString: urlString, parameters: params) { result in
             switch result {

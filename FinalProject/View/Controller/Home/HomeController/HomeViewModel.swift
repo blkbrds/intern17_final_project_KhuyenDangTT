@@ -76,7 +76,7 @@ final class HomeViewModel {
 // MARK: - API
 
 extension HomeViewModel {
-    
+
     func getNearVenues(completion: @escaping APICompletion) {
         guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
             completion(.failure(Errors.initFailure))
@@ -84,7 +84,7 @@ extension HomeViewModel {
         }
         let ll: String = "\(cordinate.latitude), \(cordinate.longitude)"
         let params = HomeService.Param(ll: ll, limit: limit, radius: radius)
-        HomeService.shared().getVenues(params: params) { [weak self] result in
+        HomeService.getVenues(params: params) { [weak self] result in
             guard let this = self else { return }
             switch result {
             case .success(let nearVenues):
@@ -111,7 +111,7 @@ extension HomeViewModel {
                 return
             }
             let params = HomeService.Param(limit: self.limit, near: placemark.city)
-            HomeService.shared().getVenues(params: params) { [weak self] result in
+            HomeService.getVenues(params: params) { [weak self] result in
                 guard let this = self else { return }
                 switch result {
                 case .success(let recommendVenues):
@@ -140,7 +140,7 @@ extension HomeViewModel {
                 return
             }
             let params = HomeService.Param(limit: self.limit, near: placemark.city, openNow: true, offset: offset)
-            HomeService.shared().getVenues(params: params) { [weak self] result in
+            HomeService.getVenues(params: params) { [weak self] result in
                 guard let this = self else { return }
                 switch result {
                 case .success(let openningVenues):

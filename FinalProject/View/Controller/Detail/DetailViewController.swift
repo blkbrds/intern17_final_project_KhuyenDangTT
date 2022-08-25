@@ -30,11 +30,11 @@ final class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Detail"
+        configUICollectionView()
+        configTableView()
         setupDataDetail()
         setupDataSimilarVenue()
-        configUICollectionView()
         configUI()
-        configTableView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
