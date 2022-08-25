@@ -31,11 +31,10 @@
                         <rect key="frame" x="20" y="0.0" width="295" height="21"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="highlightedColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" red="0.13725490196078433" green="0.047058823529411764" blue="0.0039215686274509803" alpha="0.9509578339041096" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="cAn-fR-h8e" secondAttribute="trailing" constant="5" id="C1V-Yk-6KP"/>
                     <constraint firstItem="P9e-pt-PbA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Rj5-TE-KyA"/>

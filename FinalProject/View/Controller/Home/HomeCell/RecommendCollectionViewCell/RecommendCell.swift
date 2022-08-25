@@ -26,7 +26,6 @@ final class RecommendCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.layer.cornerRadius = Config.cornerRadius
-        nameLabel.adjustsFontSizeToFitWidth = true
     }
 
     // MARK: - Private func

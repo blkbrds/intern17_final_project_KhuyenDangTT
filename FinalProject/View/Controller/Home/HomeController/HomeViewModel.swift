@@ -23,7 +23,6 @@ enum TypeRow: Int, CaseIterable {
             return 200
         case .openning:
             return 970
-
         }
     }
 }
@@ -78,7 +77,7 @@ final class HomeViewModel {
         }
     }
 
-    func getRecommendVenues(completion: @escaping APICompletion) {
+    func getRecommendVenues(completion: @escaping Completion<String>) {
         guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
             completion(.failure(Errors.initFailure))
             return
@@ -98,7 +97,7 @@ final class HomeViewModel {
                         venue.image = this.randomImage()
                     }
                     this.recommendVenues = recommendVenues
-                    completion(.success)
+                    completion(.success(placemark.city ?? ""))
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -141,6 +140,17 @@ final class HomeViewModel {
                 }
             }
         }
+    }
+
+    func getCity() -> String {
+        var result: String = ""
+        guard let cordinate = LocationManager.shared().currentLocation?.coordinate else { return "" }
+        let location = CLLocation(latitude: cordinate.latitude, longitude: cordinate.longitude)
+        location.placemark { placemark, _ in
+            guard let placemark = placemark else { return }
+            result = placemark.city ?? ""
+        }
+        return result
     }
 
     func viewModelForRecommend() -> RecommendTableViewViewModel {
