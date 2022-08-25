@@ -34,9 +34,9 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configUIRecommendTableView()
-        DispatchQueue.main.async {
-            LocationManager.shared().startUpdating { [weak self] _ in
-                guard let this = self else { return }
+        LocationManager.shared().startUpdating { [weak self] _ in
+            guard let this = self else { return }
+            DispatchQueue.main.async {
                 this.configUI()
                 this.setupDataRecommend()
                 this.setupDataNear()
