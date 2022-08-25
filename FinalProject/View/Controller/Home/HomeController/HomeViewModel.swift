@@ -118,7 +118,7 @@ extension HomeViewModel {
                         venue.image = this.randomImage()
                     }
                     this.recommendVenues = recommendVenues
-                    completion(.success(placemark.city ?? ""))
+                    completion(.success(Define.title + (placemark.city ?? "")))
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -161,5 +161,12 @@ extension HomeViewModel {
                 }
             }
         }
+    }
+}
+
+extension HomeViewModel {
+    
+    struct Define {
+        static let title: String = "Find the best coffee \nfor you in "
     }
 }

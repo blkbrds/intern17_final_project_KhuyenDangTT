@@ -78,7 +78,7 @@ final class HomeViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let city):
-                    this.titleLabel.text = Config.title + city
+                    this.titleLabel.text = city
                     this.tableView.reloadRows(at: [IndexPath(row: TypeRow.recommend.rawValue, section: Config.section)], with: .fade)
                 case .failure(let error):
                     this.alert(msg: error.localizedDescription, handler: nil)
@@ -238,6 +238,5 @@ extension HomeViewController {
         static let borderColorOfAvatarImage = UIColor.orange.cgColor
         static let avatarImage = "user_female"
         static let section: Int = 0
-        static let title: String = "Find the best coffee \nfor you in "
     }
 }
