@@ -32,4 +32,8 @@ final class OpenningViewModel {
     func viewModelForItem(at indexPath: IndexPath) -> RecommendViewModel {
         return RecommendViewModel(recommendVenue: openningVenues[indexPath.row])
     }
+
+    func getIdOpenningVenue(at indexPath: IndexPath) -> String {
+        return openningVenues[indexPath.row].venue?.id ?? ""
+    }
 }

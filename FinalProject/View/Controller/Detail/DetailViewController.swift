@@ -99,6 +99,7 @@ final class DetailViewController: UIViewController {
         tableView.register(SimilarCell.self)
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
     }
 
     private func updateUI() {
@@ -154,7 +155,7 @@ extension DetailViewController: UICollectionViewDataSource {
 extension DetailViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: Config.widthOfItem, height: collectionView.bounds.height + (UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0.0))
+        return CGSize(width: Config.widthOfItem, height: collectionView.bounds.height + Config.safeAreaInsets)
     }
 }
 
@@ -178,7 +179,7 @@ extension DetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
         let detailVC = DetailViewController()
-        detailVC.viewModel = DetailViewModel(id: viewModel.viewModelForItemSimilarVenue(at: indexPath).similarVenue.id )
+        detailVC.viewModel = DetailViewModel(id: viewModel.getIdSimilarVenue(at: indexPath) )
         navigationController?.pushViewController(detailVC, animated: true)
     }
 
@@ -214,5 +215,6 @@ extension DetailViewController {
         static let xLabel: CGFloat = 20
         static let yHeader: CGFloat = 0
         static let sizeOfLabelHeader: CGFloat = 22
+        static let safeAreaInsets: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0.0
     }
 }

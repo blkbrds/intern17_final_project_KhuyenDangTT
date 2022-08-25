@@ -75,7 +75,7 @@ extension RecommendTableViewCell: UICollectionViewDelegateFlowLayout {
 // MARK: - UICollectionViewDelegate
 extension RecommendTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.cell(self, needPerformAction: .showDetail(id: viewModel?.viewModelForItem(at: indexPath).recommendVenue.venue?.id ?? ""))
+        delegate?.cell(self, needPerformAction: .showDetail(id: viewModel?.getIdRecommendVenue(at: indexPath) ?? ""))
     }
 }
 

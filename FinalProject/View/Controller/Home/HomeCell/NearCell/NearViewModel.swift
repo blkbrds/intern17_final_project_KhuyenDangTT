@@ -9,7 +9,7 @@
 import Foundation
 
 final class NearViewModel {
-    
+
     // MARK: - Properties
     private var nearVenues: [RecommendVenue] = []
 
@@ -25,5 +25,9 @@ final class NearViewModel {
 
     func viewModelForItem(at indexPath: IndexPath) -> RecommendViewModel {
         return RecommendViewModel(recommendVenue: nearVenues[indexPath.row])
+    }
+
+    func getIdNearVenue(at indexPath: IndexPath) -> String {
+        return nearVenues[indexPath.row].venue?.id ?? ""
     }
 }
