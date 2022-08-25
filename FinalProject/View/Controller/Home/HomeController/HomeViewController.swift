@@ -24,6 +24,7 @@ final class HomeViewController: UIViewController {
     // MARK: - IBOutlets
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var titleLabel: UILabel!
 
     // MARK: - Properties
     var viewModel: HomeViewModel?
@@ -32,13 +33,15 @@ final class HomeViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configUI()
         configUIRecommendTableView()
         LocationManager.shared().startUpdating { [weak self] _ in
             guard let this = self else { return }
-            this.setupDataRecommend()
-            this.setupDataNear()
-            this.setupDataOpenning()
+            DispatchQueue.main.async {
+                this.configUI()
+                this.setupDataRecommend()
+                this.setupDataNear()
+                this.setupDataOpenning()
+            }
         }
     }
 
@@ -74,7 +77,8 @@ final class HomeViewController: UIViewController {
             guard let this = self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case .success:
+                case .success(let city):
+                    this.titleLabel.text = city
                     this.tableView.reloadRows(at: [IndexPath(row: TypeRow.recommend.rawValue, section: Config.section)], with: .fade)
                 case .failure(let error):
                     this.alert(msg: error.localizedDescription, handler: nil)

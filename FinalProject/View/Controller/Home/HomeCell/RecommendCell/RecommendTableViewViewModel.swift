@@ -26,4 +26,8 @@ final class RecommendTableViewViewModel {
     func viewModelForItem(at indexPath: IndexPath) -> RecommendViewModel {
         return RecommendViewModel(recommendVenue: recommendVenues[indexPath.row])
     }
+    
+    func getIdRecommendVenue(at indexPath: IndexPath) -> String {
+        return recommendVenues[indexPath.row].venue?.id ?? ""
+    }
 }
