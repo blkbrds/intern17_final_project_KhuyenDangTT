@@ -9,7 +9,7 @@
 import Foundation
 
 final class NearViewModel {
-    
+
     // MARK: - Properties
     private var nearVenues: [RecommendVenue] = []
 

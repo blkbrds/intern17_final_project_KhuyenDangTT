@@ -32,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "home"), selectedImage: UIImage(named: "home_fill"))
     
         let searchVC = SearchViewController()
+        let searchViewModel = SearchViewModel()
+        searchVC.viewModel = searchViewModel
         let searchNavi = UINavigationController(rootViewController: searchVC)
         searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "search"), selectedImage: UIImage(named: "search_fill"))
 

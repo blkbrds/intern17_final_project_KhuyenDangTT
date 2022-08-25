@@ -9,7 +9,7 @@
 import UIKit
 
 final class DetailCell: UICollectionViewCell {
-    
+
     // MARK: - IBOulets
     @IBOutlet private weak var detailImageView: UIImageView!
     @IBOutlet private weak var containerView: UIView!

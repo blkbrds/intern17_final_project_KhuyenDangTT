@@ -9,7 +9,7 @@
 import UIKit
 
 final class DetailViewController: UIViewController {
-    
+
     // MARK: - IBOutlets
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var detailView: UIView!
@@ -41,8 +41,8 @@ final class DetailViewController: UIViewController {
 
     // MARK: - Private func
     private func setupData() {
-        HUD.show()
         guard let viewModel = viewModel else { return }
+        HUD.show()
         viewModel.getDetailById { [weak self] result in
             HUD.dismiss()
             guard let this = self else { return }

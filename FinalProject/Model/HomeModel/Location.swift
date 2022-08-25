@@ -7,22 +7,23 @@
 //
 
 import ObjectMapper
+import RealmSwift
 
-final class Location: Mappable {
+final class Location: Object, Mappable {
 
-    var address: String?
-    var lat: Double?
-    var long: Double?
-    var distance: Int?
-    var contextLine: String?
+    @objc dynamic var address: String = ""
+    @objc dynamic var lat: Double = 0.0
+    @objc dynamic var long: Double = 0.0
+    @objc dynamic var distance: Int = 0
 
-    required init?(map: Map) { }
+    convenience required init?(map: Map) {
+        self.init()
+    }
 
     func mapping(map: Map) {
         address <- map["address"]
         lat <- map["lat"]
         long <- map["lng"]
         distance <- map["distance"]
-        contextLine <- map["contextLine"]
     }
 }

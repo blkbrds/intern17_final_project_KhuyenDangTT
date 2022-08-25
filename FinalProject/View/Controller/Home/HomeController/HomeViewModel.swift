@@ -23,7 +23,6 @@ enum TypeRow: Int, CaseIterable {
             return 200
         case .openning:
             return 970
-
         }
     }
 }
@@ -62,9 +61,9 @@ final class HomeViewModel {
             return
         }
         let ll: String = "\(cordinate.latitude), \(cordinate.longitude)"
-        let params = HomeService.Param(ll: ll, limit: limit, radius: radius)
+        let params = HomeService.Param(ll: ll, limit: limit, radius: radius, query: Config.query)
         HomeService.shared().getVenues(params: params) { [weak self] result in
-            guard let this = self else { return }
+            guard let this = self else { return completion(.failure(Api.Error.json)) }
             switch result {
             case .success(let nearVenues):
                 for venue in nearVenues {
@@ -89,9 +88,9 @@ final class HomeViewModel {
                 completion(.failure(Errors.initFailure))
                 return
             }
-            let params = HomeService.Param(limit: self.limit, near: placemark.city)
+            let params = HomeService.Param(limit: self.limit, near: placemark.city, query: Config.query)
             HomeService.shared().getVenues(params: params) { [weak self] result in
-                guard let this = self else { return }
+                guard let this = self else { return completion(.failure(Api.Error.json)) }
                 switch result {
                 case .success(let recommendVenues):
                     for venue in recommendVenues {
@@ -118,9 +117,9 @@ final class HomeViewModel {
                 completion(.failure(Errors.initFailure))
                 return
             }
-            let params = HomeService.Param(limit: self.limit, near: placemark.city, openNow: true, offset: offset)
+            let params = HomeService.Param(limit: self.limit, near: placemark.city, openNow: true, offset: offset, query: Config.query)
             HomeService.shared().getVenues(params: params) { [weak self] result in
-                guard let this = self else { return }
+                guard let this = self else { return completion(.failure(Api.Error.json)) }
                 switch result {
                 case .success(let openningVenues):
                     for venue in openningVenues {
@@ -157,5 +156,12 @@ final class HomeViewModel {
 
     func viewModelForDetail(at indexPath: IndexPath) -> DetailViewModel {
         return DetailViewModel(id: recommendVenues[indexPath.row].venue?.id ?? "")
+    }
+}
+
+extension HomeViewModel {
+    
+    struct Config {
+        static let query: String = "coffee"
     }
 }
