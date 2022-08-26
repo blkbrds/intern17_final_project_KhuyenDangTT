@@ -8,11 +8,14 @@
 
 import ObjectMapper
 import RealmSwift
+import CoreLocation
 
 final class DetailLocation: Object, Mappable {
 
     var formattedAddressList = List<String>()
     var formattedAddress: [String] = []
+    @objc dynamic var lat: CLLocationDegrees = 0.0
+    @objc dynamic var long: CLLocationDegrees = 0.0
 
     convenience required init?(map: Map) {
         self.init()
@@ -20,5 +23,7 @@ final class DetailLocation: Object, Mappable {
 
     func mapping(map: Map) {
         formattedAddress <- map["formattedAddress"]
+        lat <- map["lat"]
+        long <- map["lng"]
     }
 }
