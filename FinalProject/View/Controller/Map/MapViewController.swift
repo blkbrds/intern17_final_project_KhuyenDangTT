@@ -25,8 +25,24 @@ final class MapViewController: UIViewController {
         mapView.delegate = self
         mapView.showsUserLocation = true
         draw()
+        updateLocation()
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+
+    func updateLocation() {
+        LocationManager.shared().startUpdating { [weak self] _ in
+            guard let this = self else { return }
+            DispatchQueue.main.async {
+                let overlays = this.mapView.overlays
+                this.mapView.removeOverlays(overlays)
+                this.draw()
+            }
+        }
+    }
     func draw() {
         guard let viewModel = viewModel else { return }
         let source = CLLocationCoordinate2D(latitude: viewModel.latCurrent, longitude: viewModel.longCurrent)

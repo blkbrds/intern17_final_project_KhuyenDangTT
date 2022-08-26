@@ -11,16 +11,22 @@ import CoreLocation
 
 final class MapViewModel {
 
-    var latCurrent: CLLocationDegrees = LocationManager.shared().currentLocation?.coordinate.latitude ?? 0.0
-    var longCurrent: CLLocationDegrees = LocationManager.shared().currentLocation?.coordinate.longitude ?? 0.0
-
+    var latCurrent: CLLocationDegrees {
+        return LocationManager.shared().currentLocation?.coordinate.latitude ?? 0.0
+    }
+    var longCurrent: CLLocationDegrees {
+        return LocationManager.shared().currentLocation?.coordinate.longitude ?? 0.0
+    }
     var venue: DetailVenue
     init(venue: DetailVenue) {
         self.venue = venue
     }
 
     func titleForVenue() -> String {
-        guard let address = venue.location?.formattedAddress[2] else { return "" }
-        return address
+        if let count = venue.location?.formattedAddress.count, count >= 3 {
+            guard let address = venue.location?.formattedAddress[2] else { return "" }
+            return address
+        }
+        return ""
     }
 }

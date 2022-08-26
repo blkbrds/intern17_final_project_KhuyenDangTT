@@ -164,7 +164,7 @@ extension HomeViewModel {
 }
 
 extension HomeViewModel {
-    
+
     struct Define {
         static let title: String = "Find the best coffee \nfor you in "
     }
