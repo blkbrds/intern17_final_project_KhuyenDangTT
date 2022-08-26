@@ -39,4 +39,17 @@ final class CategoryViewModel {
     func isSelected(at indexPath: IndexPath) -> Bool {
         return categories[indexPath.row].isSelected
     }
+
+    func isRemoveSelectd(at indexPath: IndexPath) -> Bool {
+        if isSelected(at: indexPath) {
+            guard let index = selectFilter.firstIndex(of: categories[indexPath.row].id ?? "") else { return false }
+            selectFilter.remove(at: index)
+            categories[indexPath.row].isSelected = false
+            return true
+        } else {
+            selectFilter.append(categories[indexPath.row].id ?? "")
+            categories[indexPath.row].isSelected = true
+            return false
+        }
+    }
 }

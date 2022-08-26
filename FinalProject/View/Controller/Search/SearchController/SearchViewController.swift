@@ -98,6 +98,36 @@ final class SearchViewController: UIViewController {
             }
         }
     }
+    
+    private func deleteHistory(id: String, at indexPath: IndexPath) {
+        guard let viewModel = viewModel else { return }
+        viewModel.deleteHistory(id: id, at: indexPath) { [weak self] result in
+            guard let this = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    break
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
+                }
+            }
+        }
+    }
+    
+    private func addHistory() {
+        guard let viewModel = viewModel else { return }
+        viewModel.addHistory { [weak self] result in
+            guard let this = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    break
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
+                }
+            }
+        }
+    }
 
     // MARK: - IBActions
     @IBAction private func filterButtonTouchUpInside(_ sender: Any) {
@@ -109,9 +139,7 @@ final class SearchViewController: UIViewController {
 
     @IBAction private func searchButtonTouchUpInside(_ sender: UIButton) {
         guard let viewModel = viewModel else { return }
-        guard let searchText = searchBar.text, searchText.isNotEmpty else {
-            return
-        }
+        guard let searchText = searchBar.text, searchText.isNotEmpty else { return }
         searchBar.resignFirstResponder()
         viewModel.query = searchText
         search()
@@ -149,10 +177,7 @@ extension SearchViewController: UITableViewDelegate {
         let detailVC = DetailViewController()
         detailVC.viewModel = DetailViewModel(id: viewModel.searchVenues[indexPath.row].id)
         viewModel.searchVenue = viewModel.searchVenues[indexPath.row]
-        let isSearched = viewModel.isSearched()
-        if isSearched == false {
-            viewModel.addHistory()
-        }
+        addHistory()
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
@@ -172,7 +197,8 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let viewModel = viewModel else { return }
         searchBar.resignFirstResponder()
-        viewModel.query = searchBar.text ?? ""
+        guard let searchText = searchBar.text, searchText.isNotEmpty else { return }
+        viewModel.query = searchText
         search()
         widthFilterButtonConstraint.constant = Config.widthOfFilterButton
     }
@@ -199,11 +225,7 @@ extension SearchViewController: SearchCellDelegate {
         switch action {
         case .deleteHistory(let id):
             guard let indexPath = tableView.indexPath(for: cell) else { return }
-            guard let viewModel = viewModel else {
-                return
-            }
-            viewModel.id = id
-            viewModel.deleteHistory(at: indexPath)
+            deleteHistory(id: id, at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
             updateUI(isNeedReloadTableView: false)
         }

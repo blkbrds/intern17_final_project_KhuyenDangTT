@@ -83,7 +83,10 @@ extension HomeViewModel {
         let ll: String = "\(cordinate.latitude), \(cordinate.longitude)"
         let params = HomeService.Param(ll: ll, limit: limit, radius: radius, query: Config.query)
         HomeService.getVenues(params: params) { [weak self] result in
-            guard let this = self else { return }
+            guard let this = self else {
+                completion(.failure(Errors.initFailure))
+                return
+            }
             switch result {
             case .success(let nearVenues):
                 for venue in nearVenues {
@@ -110,14 +113,17 @@ extension HomeViewModel {
             }
             let params = HomeService.Param(limit: self.limit, near: placemark.city, query: Config.query)
             HomeService.getVenues(params: params) { [weak self] result in
-                guard let this = self else { return completion(.failure(Api.Error.json)) }
+                guard let this = self else {
+                    completion(.failure(Api.Error.json))
+                    return
+                }
                 switch result {
                 case .success(let recommendVenues):
                     for venue in recommendVenues {
                         venue.image = this.randomImage()
                     }
                     this.recommendVenues = recommendVenues
-                    completion(.success(Define.title + (placemark.city ?? "")))
+                    completion(.success(Config.title + (placemark.city ?? "")))
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -164,15 +170,9 @@ extension HomeViewModel {
 }
 
 extension HomeViewModel {
-    
-    struct Define {
-        static let title: String = "Find the best coffee \nfor you in "
-    }
-}
 
-extension HomeViewModel {
-    
     struct Config {
+        static let title: String = "Find the best coffee \nfor you in "
         static let query: String = "coffee"
     }
 }

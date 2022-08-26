@@ -30,9 +30,9 @@ final class CategoryViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        getCategories()
-        configUICategory()
         title = "Search"
+        configUICategory()
+        getCategories()
     }
 
     // MARK: - Private func
@@ -82,16 +82,7 @@ extension CategoryViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? CategoryCell else { return }
-        if viewModel.isSelected(at: indexPath) {
-            viewModel.viewModelForItem(at: indexPath).category.isSelected = false
-            guard let index = viewModel.selectFilter.firstIndex(of: viewModel.viewModelForItem(at: indexPath).category.id ?? "") else { return }
-            viewModel.selectFilter.remove(at: index)
-            cell.isSelect = false
-        } else {
-            viewModel.viewModelForItem(at: indexPath).category.isSelected = true
-            viewModel.selectFilter.append(viewModel.viewModelForItem(at: indexPath).category.id ?? "")
-            cell.isSelect = true
-        }
+        cell.isSelect = !viewModel.isRemoveSelectd(at: indexPath)
     }
 }
 

@@ -13,7 +13,6 @@ final class SearchViewModel {
 
     // MARK: - Properties
     var searchVenues: [SearchVenue] = []
-    var id: String = ""
     var searchVenue: SearchVenue?
     var query: String = ""
     var categoryId: [String] = []
@@ -57,7 +56,6 @@ extension SearchViewModel {
             self.isShowDeleteHistoryButton = true
             completion(true)
         } catch {
-            print(error)
             completion(false)
         }
     }
@@ -74,31 +72,35 @@ extension SearchViewModel {
         }
     }
 
-    func addHistory() {
-        guard let searchVenue = searchVenue else { return }
-        do {
-            let realm = try Realm()
-            try realm.write {
-                realm.create(SearchVenue.self, value: searchVenue, update: .all)
+    func addHistory(completion: APICompletion) {
+        if isSearched() { return } else {
+            guard let searchVenue = searchVenue else { return }
+            do {
+                let realm = try Realm()
+                try realm.write {
+                    realm.create(SearchVenue.self, value: searchVenue, update: .all)
+                }
+                completion(.success)
+            } catch {
+                completion(.failure(error))
             }
-        } catch {
-            print(error)
         }
     }
 
-    func deleteHistory(at indexPath: IndexPath) {
+    func deleteHistory(id: String, at indexPath: IndexPath, completion: APICompletion) {
         do {
             let realm = try Realm()
             let result = realm.objects(SearchVenue.self).first(where: { $0.id == id })
             if let object = result {
                 try realm.write {
                     realm.delete(object)
-                    searchVenues.remove(at: indexPath.row)
                 }
             }
+            completion(.success)
         } catch {
-            print(error)
+            completion(.failure(error))
         }
+        searchVenues.remove(at: indexPath.row)
     }
 }
 
@@ -106,27 +108,24 @@ extension SearchViewModel {
 extension SearchViewModel {
 
     func getVenues(completion: @escaping APICompletion) {
-        if query.isEmpty {
-
-        } else {
-            guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
-                return completion(.failure(Errors.initFailure))
-            }
-            let ll: String = "\(cordinate.latitude), \(cordinate.longitude)"
-            let params = SearchService.Param(query: query, ll: ll, categoryId: convertCategoryIdToString())
-            SearchService.shared().getVenues(params: params) { [weak self] result in
-                guard let this = self else { return completion(.failure(Api.Error.json)) }
-                switch result {
-                case .success(let venues):
-                    for venue in venues {
-                        venue.image = this.randomImage()
-                    }
-                    this.isShowDeleteHistoryButton = false
-                    this.searchVenues = venues
-                    completion(.success)
-                case .failure(let error):
-                    completion(.failure(error))
+        guard let cordinate = LocationManager.shared().currentLocation?.coordinate else {
+            completion(.failure(Errors.initFailure))
+            return
+        }
+        let ll: String = "\(cordinate.latitude), \(cordinate.longitude)"
+        let params = SearchService.Param(query: query, ll: ll, categoryId: convertCategoryIdToString())
+        SearchService.shared().getVenues(params: params) { [weak self] result in
+            guard let this = self else { return completion(.failure(Api.Error.json)) }
+            switch result {
+            case .success(let venues):
+                for venue in venues {
+                    venue.image = this.randomImage()
                 }
+                this.isShowDeleteHistoryButton = false
+                this.searchVenues = venues
+                completion(.success)
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
