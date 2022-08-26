@@ -26,7 +26,7 @@ final class FavoriteViewModel {
         }
     }
 
-    func deleteFavoriteVenue(id: String, at indexPath: IndexPath, completion: @escaping APICompletion) {
+    func deleteFavoriteVenue(id: String, at indexPath: IndexPath, completion: APICompletion) {
         do {
             let realm = try Realm()
             let result = realm.objects(DetailVenue.self).first(where: { $0.id == id })

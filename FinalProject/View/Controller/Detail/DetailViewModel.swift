@@ -90,7 +90,7 @@ extension DetailViewModel {
         }
     }
 
-    func addFavoriteVenue(completion: @escaping APICompletion) {
+    func addFavoriteVenue(completion: APICompletion) {
         guard let detailVenue = detailVenue else { return }
         do {
             let realm = try Realm()
@@ -104,7 +104,7 @@ extension DetailViewModel {
         }
     }
 
-    func deleteFavoriteVenue(completion: @escaping APICompletion) {
+    func deleteFavoriteVenue(completion: APICompletion) {
         do {
             let realm = try Realm()
             let result = realm.objects(DetailVenue.self).first(where: { $0.id == id })
