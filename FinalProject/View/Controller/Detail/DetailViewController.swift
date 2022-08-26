@@ -145,9 +145,11 @@ final class DetailViewController: UIViewController {
     }
 
     // MARK: - IBActions
-    @IBAction private func seeMapButtonTouchUpInside(_ sender: UIButton) {
-//        let mapVC = MapViewController()
-//        navigationController?.pushViewController(mapVC, animated: true)
+    @IBAction func seeMapButtonTouchUpInside(_ sender: UIButton) {
+        let mapVC = MapViewController()
+        guard let venue = viewModel?.detailVenue else { return }
+        mapVC.viewModel = MapViewModel(venue: venue)
+        navigationController?.pushViewController(mapVC, animated: true)
     }
 
     @IBAction private func backButtonTouchUpInside(_ sender: UIButton) {
