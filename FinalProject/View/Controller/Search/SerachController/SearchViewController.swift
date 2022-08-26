@@ -16,7 +16,6 @@ class SearchViewController: UIViewController {
         title = "Search"
     }
 
-
     /*
     // MARK: - Navigation
 
