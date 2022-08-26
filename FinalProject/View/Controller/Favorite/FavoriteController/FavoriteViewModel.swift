@@ -22,24 +22,24 @@ final class FavoriteViewModel {
             favoriteVenues = Array(results)
             completion(true)
         } catch {
-            print(error)
             completion(false)
         }
     }
 
-    func deleteFavoriteVenue(id: String, at indexPath: IndexPath) {
+    func deleteFavoriteVenue(id: String, at indexPath: IndexPath, completion: @escaping APICompletion) {
         do {
             let realm = try Realm()
             let result = realm.objects(DetailVenue.self).first(where: { $0.id == id })
             if let object = result {
                 try realm.write {
                     realm.delete(object)
-                    favoriteVenues.remove(at: indexPath.row )
                 }
             }
+            completion(.success)
         } catch {
-            print(error)
+            completion(.failure(error))
         }
+        favoriteVenues.remove(at: indexPath.row )
     }
 
     func numberOfRowInSection() -> Int {

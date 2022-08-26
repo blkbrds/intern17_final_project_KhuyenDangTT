@@ -32,12 +32,30 @@ final class FavoriteViewController: UIViewController {
     // MARK: - Private func
     private func setupData() {
         guard let viewModel = viewModel else { return }
-        viewModel.getFavoriteVenues { done in
+        HUD.show()
+        viewModel.getFavoriteVenues { [weak self] done in
+            HUD.dismiss()
+            guard let this = self else { return }
             DispatchQueue.main.async {
                 if done {
-                    self.tableView.reloadData()
+                    this.tableView.reloadData()
                 } else {
-                    self.alert(msg: "", handler: nil)
+                    this.alert(msg: Config.errorGetFromRealm, handler: nil)
+                }
+            }
+        }
+    }
+
+    private func deleteFavoriteVenue(id: String, at indexPath: IndexPath) {
+        guard let viewModel = viewModel else { return }
+        viewModel.deleteFavoriteVenue(id: id, at: indexPath) { [weak self] result in
+            guard let this = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    break
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
                 }
             }
         }
@@ -94,18 +112,16 @@ extension FavoriteViewController: FavoriteCellDelegate {
         switch action {
         case .deleteFavorite(let id):
             guard let indexPath = tableView.indexPath(for: cell) else { return }
-            guard let viewModel = viewModel else {
-                return
-            }
-            viewModel.deleteFavoriteVenue(id: id, at: indexPath)
+            deleteFavoriteVenue(id: id, at: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
 }
 
 extension FavoriteViewController {
-    
+
     struct Config {
         static let heightItem: CGFloat = 100
+        static let errorGetFromRealm: String = "Realm error"
     }
 }
