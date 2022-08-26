@@ -45,6 +45,7 @@ final class OpeningTableViewCell: UITableViewCell {
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
         collectionView.contentInset = UIEdgeInsets(top: Config.topContenInset, left: Config.leftContenInset, bottom: Config.bottomContenInset, right: Config.rightContenInset)
+        collectionView.isScrollEnabled = false
     }
 }
 
@@ -80,12 +81,6 @@ extension OpeningTableViewCell: UICollectionViewDelegateFlowLayout {
 
 // MARK: - UICollectionViewDelegate
 extension OpeningTableViewCell: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
-        if viewModel.isLoadMore(at: indexPath) {
-            delegate?.cell(self, needPerformAction: .loadMore)
-        }
-    }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.cell(self, needPerformAction: .showDetail(id: viewModel?.getIdOpenningVenue(at: indexPath) ?? ""))
@@ -101,7 +96,7 @@ extension OpeningTableViewCell {
         static let widthOfItem: CGFloat = (UIScreen.main.bounds.width - 60) / 2
         static let heightOfItem: CGFloat = UIScreen.main.bounds.width / 2.5
         static let topContenInset: CGFloat = 20
-        static let bottomContenInset: CGFloat = 0
+        static let bottomContenInset: CGFloat = 20
         static let leftContenInset: CGFloat = 20
         static let rightContenInset: CGFloat = 20
     }

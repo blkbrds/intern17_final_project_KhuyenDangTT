@@ -131,6 +131,8 @@ final class HomeViewController: UIViewController {
                 switch result {
                 case .success:
                     cell.viewModel = viewModel.viewModelForOpenning()
+                    this.tableView.beginUpdates()
+                    this.tableView.endUpdates()
                 case .failure(let error):
                     this.alert(msg: error.localizedDescription, handler: nil)
                 }
@@ -189,6 +191,16 @@ extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        guard let viewModel = viewModel else { return }
+        let distanceFromBottom = scrollView.contentSize.height - scrollView.contentOffset.y
+        let screenHeight = UIScreen.main.bounds.height
+        if distanceFromBottom - screenHeight < Config.distanceToLoadMore && !viewModel.isFull {
+            guard let cell = tableView.cellForRow(at: IndexPath(row: TypeRow.openning.rawValue, section: Config.section)) as? OpeningTableViewCell else { return }
+            loadMore(for: cell)
+        }
+    }
 }
 
 // MARK: - OpeningTableViewCellDelegate
@@ -238,5 +250,6 @@ extension HomeViewController {
         static let borderColorOfAvatarImage = UIColor.orange.cgColor
         static let avatarImage = "user_female"
         static let section: Int = 0
+        static let distanceToLoadMore: CGFloat = 50
     }
 }

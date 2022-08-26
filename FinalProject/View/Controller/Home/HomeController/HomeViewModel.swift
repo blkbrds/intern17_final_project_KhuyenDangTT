@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreLocation
+import SwiftUtils
 
 // MARK: - Enum
 enum TypeRow: Int, CaseIterable {
@@ -35,7 +36,7 @@ final class HomeViewModel {
     private (set) var openningVenues: [RecommendVenue] = []
     private var limit: Int = 10
     private var radius: Int = 1_000
-    private var isFull: Bool = false
+    private(set) var isFull: Bool = false
 
     // MARK: - Private func
     private func randomImage() -> String {
@@ -51,6 +52,14 @@ final class HomeViewModel {
     func heightForRow(at indexPath: IndexPath) -> Float? {
         guard let type = TypeRow(rawValue: indexPath.row) else {
             return 0.0
+        }
+        if type == .openning {
+            guard openningVenues.count != 0 else { return 0 }
+            let height = OpeningTableViewCell.Config.heightOfItem
+            let numberRow: Int = Int(openningVenues.count / 2)
+            let heightCell = Float(numberRow) * Float(height)
+            let heightSpaceBetweenCells = Float(numberRow - 1) * Float(OpeningTableViewCell.Config.minimumLineSpacingForSection)
+            return heightCell + heightSpaceBetweenCells + Config.heightOfTitle + Float(OpeningTableViewCell.Config.topContenInset) + Float(OpeningTableViewCell.Config.bottomContenInset)
         }
         return type.height
     }
@@ -174,5 +183,6 @@ extension HomeViewModel {
     struct Config {
         static let title: String = "Find the best coffee \nfor you in "
         static let query: String = "coffee"
+        static let heightOfTitle: Float = 21
     }
 }
