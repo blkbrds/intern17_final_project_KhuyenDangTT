@@ -79,6 +79,36 @@ final class DetailViewController: UIViewController {
         }
     }
 
+    private func addFavoriteVenue() {
+        guard let viewModel = viewModel else { return }
+        viewModel.addFavoriteVenue { [weak self] result in
+            guard let this = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    break
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
+                }
+            }
+        }
+    }
+
+    private func deleteFavoriteVenue() {
+        guard let viewModel = viewModel else { return }
+        viewModel.deleteFavoriteVenue { [weak self] result in
+            guard let this = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    break
+                case .failure(let error):
+                    this.alert(msg: error.localizedDescription, handler: nil)
+                }
+            }
+        }
+    }
+
     private func configUICollectionView() {
         collectionView.register(DetailCell.self)
         collectionView.dataSource = self
@@ -128,9 +158,9 @@ final class DetailViewController: UIViewController {
         guard let viewModel = viewModel else { return }
         let isFavorite = viewModel.isFavorite()
         if isFavorite {
-            viewModel.deleteFavoriteVenue()
+            deleteFavoriteVenue()
         } else {
-            viewModel.addFavoriteVenue()
+            addFavoriteVenue()
         }
         let image: UIImage? = !isFavorite ? UIImage(named: Config.favoritedImage) : UIImage(named: Config.favoriteImage)
         favoriteButton.setImage(image, for: .normal)
