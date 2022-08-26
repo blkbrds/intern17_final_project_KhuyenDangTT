@@ -12,6 +12,7 @@ import ObjectMapper
 class DetailService {
 
     // MARK: - Properties
+
     static var params: [String: Any] {
         var json: [String: Any] = [:]
         json["client_id"] = Api.Params.clientID

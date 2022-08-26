@@ -86,12 +86,11 @@ extension DetailViewModel {
             let result = realm.objects(DetailVenue.self).first(where: { $0.id == id })
             return result != nil
         } catch {
-            print(error)
             return false
         }
     }
 
-    func addFavoriteVenue() {
+    func addFavoriteVenue(completion: APICompletion) {
         guard let detailVenue = detailVenue else { return }
         do {
             let realm = try Realm()
@@ -99,12 +98,13 @@ extension DetailViewModel {
                 convertArraytoList()
                 realm.create(DetailVenue.self, value: detailVenue, update: .all)
             }
+            completion(.success)
         } catch {
-            print(error)
+            completion(.failure(error))
         }
     }
 
-    func deleteFavoriteVenue() {
+    func deleteFavoriteVenue(completion: APICompletion) {
         do {
             let realm = try Realm()
             let result = realm.objects(DetailVenue.self).first(where: { $0.id == id })
@@ -113,8 +113,9 @@ extension DetailViewModel {
                     realm.delete(object)
                 }
             }
+            completion(.success)
         } catch {
-            print(error)
+            completion(.failure(error))
         }
     }
 }
@@ -159,4 +160,3 @@ extension DetailViewModel {
         static let seeMap: String = " (See map...)"
     }
 }
-

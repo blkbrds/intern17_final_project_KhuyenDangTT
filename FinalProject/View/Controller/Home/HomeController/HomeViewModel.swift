@@ -73,7 +73,6 @@ final class HomeViewModel {
 }
 
 // MARK: - API
-
 extension HomeViewModel {
 
     func getNearVenues(completion: @escaping APICompletion) {

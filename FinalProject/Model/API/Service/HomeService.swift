@@ -27,7 +27,6 @@ class HomeService {
              openNow: Bool? = nil,
              offset: Int? = nil,
              query: String) {
-
             self.ll = ll
             self.limit = limit
             self.near = near
@@ -36,29 +35,29 @@ class HomeService {
             self.offset = offset
             self.query = query
         }
-
+        
         func toJSON() -> [String: Any] {
             var json: [String: Any] = Api.Params.defaultJSON
             if let ll = ll {
                 json["ll"] = ll
             }
-
+            
             if let radius = radius {
                 json["radius"] = radius
             }
-
+            
             if let near = near {
                 json["near"] = near
             }
-
+            
             if let openNow = openNow {
                 json["openNow"] = openNow
             }
-
+            
             if let offset = offset {
                 json["offset"] = offset
             }
-
+            
             json["limit"] = limit
             json["query"] = query
             return json
