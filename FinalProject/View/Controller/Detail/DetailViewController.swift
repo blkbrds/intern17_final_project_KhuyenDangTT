@@ -83,13 +83,11 @@ final class DetailViewController: UIViewController {
         guard let viewModel = viewModel else { return }
         viewModel.addFavoriteVenue { [weak self] result in
             guard let this = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
-                    this.alert(msg: error.localizedDescription, handler: nil)
-                }
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                this.alert(msg: error.localizedDescription, handler: nil)
             }
         }
     }
@@ -98,15 +96,14 @@ final class DetailViewController: UIViewController {
         guard let viewModel = viewModel else { return }
         viewModel.deleteFavoriteVenue { [weak self] result in
             guard let this = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
-                    this.alert(msg: error.localizedDescription, handler: nil)
-                }
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                this.alert(msg: error.localizedDescription, handler: nil)
             }
         }
+        
     }
 
     private func configUICollectionView() {
@@ -130,6 +127,7 @@ final class DetailViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
     }
 
     private func updateUI() {

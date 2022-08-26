@@ -36,13 +36,12 @@ final class FavoriteViewController: UIViewController {
         viewModel.getFavoriteVenues { [weak self] done in
             HUD.dismiss()
             guard let this = self else { return }
-            DispatchQueue.main.async {
-                if done {
-                    this.tableView.reloadData()
-                } else {
-                    this.alert(msg: Config.errorGetFromRealm, handler: nil)
-                }
+            if done {
+                this.tableView.reloadData()
+            } else {
+                this.alert(msg: Config.errorGetFromRealm, handler: nil)
             }
+            
         }
     }
 
@@ -50,13 +49,12 @@ final class FavoriteViewController: UIViewController {
         guard let viewModel = viewModel else { return }
         viewModel.deleteFavoriteVenue(id: id, at: indexPath) { [weak self] result in
             guard let this = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
-                    this.alert(msg: error.localizedDescription, handler: nil)
-                }
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                this.alert(msg: error.localizedDescription, handler: nil)
+                
             }
         }
     }
