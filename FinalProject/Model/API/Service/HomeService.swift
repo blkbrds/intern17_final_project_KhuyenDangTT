@@ -18,24 +18,26 @@ class HomeService {
         var radius: Int?
         var openNow: Bool?
         var offset: Int?
-        
+        var query: String?
+
         init(ll: String? = nil,
              limit: Int,
              near: String? = nil,
              radius: Int? = nil,
              openNow: Bool? = nil,
-             offset: Int? = nil) {
-            
+             offset: Int? = nil,
+             query: String) {
             self.ll = ll
             self.limit = limit
             self.near = near
             self.radius = radius
             self.openNow = openNow
             self.offset = offset
+            self.query = query
         }
         
         func toJSON() -> [String: Any] {
-            var json: [String: Any] = defaultJSON
+            var json: [String: Any] = Api.Params.defaultJSON
             if let ll = ll {
                 json["ll"] = ll
             }
@@ -57,15 +59,7 @@ class HomeService {
             }
             
             json["limit"] = limit
-            return json
-        }
-        
-        var defaultJSON: [String: Any] {
-            var json: [String: Any] = [:]
-            json["client_id"] = Api.Params.clientID
-            json["client_secret"] = Api.Params.clientSecret
-            json["v"] = Api.Params.version
-            json["query"] = Api.Params.query
+            json["query"] = query
             return json
         }
     }

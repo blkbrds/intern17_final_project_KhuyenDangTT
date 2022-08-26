@@ -23,7 +23,14 @@ final class Api {
         static let clientID = "PQXVYOXN4R55FNHKV05EUIF5OR4GZU4F2ITMOGIW3ZA1CKCZ"
         static let clientSecret = "JEG0HJKBHZNL4ADKBSMRVBFDDFVZWSFCTQ2P2A3UDQXAFAIK"
         static let version = "20211118"
-        static let query = "coffee"
+
+        static var defaultJSON: [String: Any] = {
+            var json: [String: Any] = [:]
+            json["client_id"] = Api.Params.clientID
+            json["client_secret"] = Api.Params.clientSecret
+            json["v"] = Api.Params.version
+            return json
+        }()
     }
 }
 

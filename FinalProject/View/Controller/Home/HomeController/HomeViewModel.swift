@@ -81,9 +81,12 @@ extension HomeViewModel {
             return
         }
         let ll: String = "\(cordinate.latitude), \(cordinate.longitude)"
-        let params = HomeService.Param(ll: ll, limit: limit, radius: radius)
+        let params = HomeService.Param(ll: ll, limit: limit, radius: radius, query: Config.query)
         HomeService.getVenues(params: params) { [weak self] result in
-            guard let this = self else { return }
+            guard let this = self else {
+                completion(.failure(Errors.initFailure))
+                return
+            }
             switch result {
             case .success(let nearVenues):
                 for venue in nearVenues {
@@ -108,16 +111,19 @@ extension HomeViewModel {
                 completion(.failure(Errors.initFailure))
                 return
             }
-            let params = HomeService.Param(limit: self.limit, near: placemark.city)
+            let params = HomeService.Param(limit: self.limit, near: placemark.city, query: Config.query)
             HomeService.getVenues(params: params) { [weak self] result in
-                guard let this = self else { return }
+                guard let this = self else {
+                    completion(.failure(Api.Error.json))
+                    return
+                }
                 switch result {
                 case .success(let recommendVenues):
                     for venue in recommendVenues {
                         venue.image = this.randomImage()
                     }
                     this.recommendVenues = recommendVenues
-                    completion(.success(Define.title + (placemark.city ?? "")))
+                    completion(.success(Config.title + (placemark.city ?? "")))
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -137,7 +143,7 @@ extension HomeViewModel {
                 completion(.failure(Errors.initFailure))
                 return
             }
-            let params = HomeService.Param(limit: self.limit, near: placemark.city, openNow: true, offset: offset)
+            let params = HomeService.Param(limit: self.limit, near: placemark.city, openNow: true, offset: offset, query: Config.query)
             HomeService.getVenues(params: params) { [weak self] result in
                 guard let this = self else { return }
                 switch result {
@@ -165,7 +171,8 @@ extension HomeViewModel {
 
 extension HomeViewModel {
 
-    struct Define {
+    struct Config {
         static let title: String = "Find the best coffee \nfor you in "
+        static let query: String = "coffee"
     }
 }
