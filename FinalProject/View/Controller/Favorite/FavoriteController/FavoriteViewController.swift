@@ -26,22 +26,20 @@ final class FavoriteViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = false
+        navigationController?.setNavigationBarHidden(false, animated: true)
         setupData()
     }
 
     // MARK: - Private func
     private func setupData() {
         guard let viewModel = viewModel else { return }
-        HUD.show()
         viewModel.getFavoriteVenues { [weak self] done in
-            HUD.dismiss()
             guard let this = self else { return }
             if done {
                 this.tableView.reloadData()
             } else {
                 this.alert(msg: Config.errorGetFromRealm, handler: nil)
             }
-            
         }
     }
 
@@ -54,7 +52,6 @@ final class FavoriteViewController: UIViewController {
                 break
             case .failure(let error):
                 this.alert(msg: error.localizedDescription, handler: nil)
-                
             }
         }
     }

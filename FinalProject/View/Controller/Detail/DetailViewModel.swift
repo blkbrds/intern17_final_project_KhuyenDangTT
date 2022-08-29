@@ -56,12 +56,21 @@ final class DetailViewModel {
     }
 
     func numberOfItemsInSection() -> Int {
-        return detailVenue?.photos.first?.items.count ?? 0
+        let numberItem = detailVenue?.photos.first?.items.count ?? 0
+        if numberItem == 0 {
+            return 1
+        } else {
+            return numberItem
+        }
     }
 
     func viewModelForItem(at indexPath: IndexPath) -> DetailCellViewModel {
-        let photoItem = detailVenue?.photos.first?.items ?? []
-        return DetailCellViewModel(photoItem: photoItem[indexPath.row])
+        if numberOfItemsInSection() == 1 {
+            return DetailCellViewModel(photoItem: nil)
+        } else {
+            let photoItem = detailVenue?.photos.first?.items ?? []
+            return DetailCellViewModel(photoItem: photoItem[indexPath.row])
+        }
     }
 
     func viewModelForItemSimilarVenue(at indexPath: IndexPath) -> SimilarCellViewModel {

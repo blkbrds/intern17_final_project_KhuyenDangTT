@@ -30,26 +30,22 @@ class LocationManager: NSObject {
         return sharedLocationManager
     }
 
-    // MARK: - Private Methods
-    func configLocationManager() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 10
-        locationManager.allowsBackgroundLocationUpdates = true
-    }
-
     // MARK: - Private init
     private override init() {
         super.init()
         configLocationManager()
     }
 
+    // MARK: - Private Methods
+    func configLocationManager() {
+        locationManager.delegate = self
+        locationManager.allowsBackgroundLocationUpdates = true
+    }
+
     // MARK: - Public func
     func request() {
         let status = CLLocationManager.authorizationStatus()
-        if status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled() {
-            return
-        }
+        if status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled() { return }
         if status == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
             return
@@ -71,6 +67,7 @@ class LocationManager: NSObject {
         isUpdatingLocation = true
         locationManager.startUpdatingLocation()
     }
+
     func stopUpdating() {
         locationManager.stopUpdatingLocation()
         isUpdatingLocation = false
@@ -119,18 +116,7 @@ extension LocationManager: CLLocationManagerDelegate {
 
 extension CLPlacemark {
 
-    var streetName: String? { thoroughfare }
-    var streetNumber: String? { subThoroughfare }
     var city: String? { locality }
-    var neighborhood: String? { subLocality }
-    var state: String? { administrativeArea }
-    var county: String? { subAdministrativeArea }
-    var zipCode: String? { postalCode }
-    @available(iOS 11.0, *)
-    var postalAddressFormatted: String? {
-        guard let postalAddress = postalAddress else { return nil }
-        return CNPostalAddressFormatter().string(from: postalAddress)
-    }
 }
 
 extension CLLocation {

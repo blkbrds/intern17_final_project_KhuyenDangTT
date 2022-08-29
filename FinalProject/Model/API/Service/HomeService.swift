@@ -35,29 +35,29 @@ class HomeService {
             self.offset = offset
             self.query = query
         }
-        
+
         func toJSON() -> [String: Any] {
             var json: [String: Any] = Api.Params.defaultJSON
             if let ll = ll {
                 json["ll"] = ll
             }
-            
+
             if let radius = radius {
                 json["radius"] = radius
             }
-            
+
             if let near = near {
                 json["near"] = near
             }
-            
+
             if let openNow = openNow {
                 json["openNow"] = openNow
             }
-            
+
             if let offset = offset {
                 json["offset"] = offset
             }
-            
+
             json["limit"] = limit
             json["query"] = query
             return json
@@ -65,7 +65,7 @@ class HomeService {
     }
 
     // MARK: - Public func
-    static func getVenues(params: Param, completion: @escaping Completion<[RecommendVenue]>) {
+    static func getVenues(params: Param, completion: @escaping Completion<[Venue]>) {
         let urlString = Api.Path.baseURL
         api.request(method: .get, urlString: urlString, parameters: params.toJSON()) { result in
             switch result {
@@ -73,12 +73,12 @@ class HomeService {
                 if let data = data as? JSObject,
                    let response = data["response"] as? JSObject,
                    let groups = response["groups"] as? JSArray {
-                    var recommendVenue: [RecommendVenue] = []
+                    var recommendVenue: [Venue] = []
                     guard let items = groups.first?["items"] as? JSArray else {
                         completion(.failure(Api.Error.json))
                         return
                     }
-                    recommendVenue = Mapper<RecommendVenue>().mapArray(JSONArray: items)
+                    recommendVenue = Mapper<Venue>().mapArray(JSONArray: items)
                     completion(.success(recommendVenue))
                 } else {
                     completion(.failure(Api.Error.json))

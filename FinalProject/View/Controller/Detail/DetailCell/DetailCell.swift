@@ -23,7 +23,11 @@ final class DetailCell: UICollectionViewCell {
     // MARK: - Private func
     private func updateCell() {
         detailImageView.downloadImage(with: viewModel?.photoItem?.urlImage ?? "") { image in
-            self.detailImageView.image = image
+            if image != nil {
+                self.detailImageView.image = image
+            } else {
+                self.detailImageView.image = #imageLiteral(resourceName: "defaultImage")
+            }
         }
     }
 }

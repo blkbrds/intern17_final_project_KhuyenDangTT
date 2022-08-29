@@ -10,9 +10,9 @@ import Foundation
 
 final class RecommendViewModel {
 
-    var recommendVenue: RecommendVenue
+    var recommendVenue: Venue
 
-    init(recommendVenue: RecommendVenue) {
+    init(recommendVenue: Venue) {
         self.recommendVenue = recommendVenue
     }
 }

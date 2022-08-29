@@ -33,11 +33,13 @@ final class HomeViewController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        configUI()
         configUIRecommendTableView()
         LocationManager.shared().startUpdating { [weak self] _ in
             guard let this = self else { return }
             DispatchQueue.main.async {
-                this.configUI()
+                this.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                this.viewModel?.resetFlagLoadMore()
                 this.setupDataRecommend()
                 this.setupDataNear()
                 this.setupDataOpenning()
@@ -142,6 +144,7 @@ final class HomeViewController: UIViewController {
 
     // MARK: - IBActions
     @IBAction private func searchButtonTouchUpInside(_ sender: UIButton) {
+        tabBarController?.selectedIndex = 1
     }
 }
 
@@ -181,22 +184,15 @@ extension HomeViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let viewModel = viewModel else { return 0.0 }
-        if let height = viewModel.heightForRow(at: indexPath) {
-            return CGFloat(height)
-        } else {
-            return UITableView.automaticDimension
-        }
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        let height = viewModel.heightForRow(at: indexPath) ?? 0.0
+        return CGFloat(height)
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        guard let viewModel = viewModel else { return }
+        guard let viewModel = viewModel, !viewModel.isFull else { return }
         let distanceFromBottom = scrollView.contentSize.height - scrollView.contentOffset.y
         let screenHeight = UIScreen.main.bounds.height
-        if distanceFromBottom - screenHeight < Config.distanceToLoadMore && !viewModel.isFull {
+        if distanceFromBottom - screenHeight < Config.distanceToLoadMore {
             guard let cell = tableView.cellForRow(at: IndexPath(row: TypeRow.openning.rawValue, section: Config.section)) as? OpeningTableViewCell else { return }
             loadMore(for: cell)
         }
@@ -208,8 +204,6 @@ extension HomeViewController: OpeningTableViewCellDelegate {
 
     func cell(_ cell: OpeningTableViewCell, needPerformAction action: OpeningTableViewCell.Action) {
         switch action {
-        case .loadMore:
-            loadMore(for: cell)
         case .showDetail(let id):
             let detailVC = DetailViewController()
             detailVC.viewModel = DetailViewModel(id: id)

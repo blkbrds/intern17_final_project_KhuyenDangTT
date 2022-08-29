@@ -53,15 +53,11 @@ final class SearchViewController: UIViewController {
     // MARK: - Private func
     private func getHistoryVenue() {
         guard let viewModel = viewModel else { return }
-        HUD.show()
         viewModel.getHistoryVenues { done in
-            HUD.dismiss()
-            DispatchQueue.main.async {
-                if done {
-                    self.updateUI()
-                } else {
-                    self.alert(msg: "Realm error!", handler: nil)
-                }
+            if done {
+                self.updateUI()
+            } else {
+                self.alert(msg: Config.realmError, handler: nil)
             }
         }
     }
@@ -98,33 +94,29 @@ final class SearchViewController: UIViewController {
             }
         }
     }
-    
+
     private func deleteHistory(id: String, at indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
         viewModel.deleteHistory(id: id, at: indexPath) { [weak self] result in
             guard let this = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
-                    this.alert(msg: error.localizedDescription, handler: nil)
-                }
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                this.alert(msg: error.localizedDescription, handler: nil)
             }
         }
     }
-    
+
     private func addHistory() {
         guard let viewModel = viewModel else { return }
         viewModel.addHistory { [weak self] result in
             guard let this = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    break
-                case .failure(let error):
-                    this.alert(msg: error.localizedDescription, handler: nil)
-                }
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                this.alert(msg: error.localizedDescription, handler: nil)
             }
         }
     }
@@ -144,7 +136,6 @@ final class SearchViewController: UIViewController {
         viewModel.query = searchText
         search()
         widthFilterButtonConstraint.constant = Config.widthOfFilterButton
-
     }
 }
 
@@ -190,6 +181,7 @@ extension SearchViewController: UISearchBarDelegate {
             guard isSearch else { return }
             getHistoryVenue()
             widthFilterButtonConstraint.constant = 0
+            isSearch = false
             return
         }
     }
@@ -238,5 +230,6 @@ extension SearchViewController {
     struct Config {
         static let heightForRow: CGFloat = 100
         static let widthOfFilterButton: CGFloat = 25
+        static let realmError: String = "Realm error!"
     }
 }

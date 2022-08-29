@@ -31,18 +31,12 @@ enum TypeRow: Int, CaseIterable {
 final class HomeViewModel {
 
     // MARK: - Properties
-    private var recommendVenues: [RecommendVenue] = []
-    private var nearVenues: [RecommendVenue] = []
-    private (set) var openningVenues: [RecommendVenue] = []
+    private var recommendVenues: [Venue] = []
+    private var nearVenues: [Venue] = []
+    private (set) var openningVenues: [Venue] = []
     private var limit: Int = 10
     private var radius: Int = 1_000
     private(set) var isFull: Bool = false
-
-    // MARK: - Private func
-    private func randomImage() -> String {
-        let index = Int.random(min: 1, max: 13)
-        return "coffee\(index)"
-    }
 
     // MARK: - Public func
     func numberOfRowInSection() -> Int {
@@ -73,11 +67,15 @@ final class HomeViewModel {
     }
 
     func viewModelForOpenning() -> OpenningViewModel {
-        return OpenningViewModel(openningVenues: openningVenues, isFull: isFull)
+        return OpenningViewModel(openningVenues: openningVenues)
     }
 
     func viewModelForDetail(at indexPath: IndexPath) -> DetailViewModel {
-        return DetailViewModel(id: recommendVenues[indexPath.row].venue?.id ?? "")
+        return DetailViewModel(id: recommendVenues[indexPath.row].id ?? "")
+    }
+
+    func resetFlagLoadMore() {
+        isFull = false
     }
 }
 
@@ -98,9 +96,6 @@ extension HomeViewModel {
             }
             switch result {
             case .success(let nearVenues):
-                for venue in nearVenues {
-                    venue.image = this.randomImage()
-                }
                 this.nearVenues = nearVenues
                 completion(.success)
             case .failure(let error):
@@ -128,9 +123,6 @@ extension HomeViewModel {
                 }
                 switch result {
                 case .success(let recommendVenues):
-                    for venue in recommendVenues {
-                        venue.image = this.randomImage()
-                    }
                     this.recommendVenues = recommendVenues
                     completion(.success(Config.title + (placemark.city ?? "")))
                 case .failure(let error):
@@ -157,17 +149,13 @@ extension HomeViewModel {
                 guard let this = self else { return }
                 switch result {
                 case .success(let openningVenues):
-                    for venue in openningVenues {
-                        venue.image = this.randomImage()
-                    }
                     if isLoadMore {
                         this.openningVenues.append(contentsOf: openningVenues)
-                        if openningVenues.count < this.limit {
-                            this.isFull = true
-                        }
                     } else {
                         this.openningVenues = openningVenues
-                        this.isFull = false
+                    }
+                    if openningVenues.count < this.limit {
+                        this.isFull = true
                     }
                     completion(.success)
                 case .failure(let error):
