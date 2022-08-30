@@ -85,13 +85,6 @@ extension MapViewController: MKMapViewDelegate {
             renderer.strokeColor = UIColor.systemBlue
             renderer.lineWidth = 3
             return renderer
-        } else if let circle = overlay as? MKCircle {
-            let circleRenderer = MKCircleRenderer(circle: circle)
-            circleRenderer.fillColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-            circleRenderer.strokeColor = .blue
-            circleRenderer.lineWidth = 1
-            circleRenderer.lineDashPhase = 10
-            return circleRenderer
         } else {
             return MKOverlayRenderer()
         }

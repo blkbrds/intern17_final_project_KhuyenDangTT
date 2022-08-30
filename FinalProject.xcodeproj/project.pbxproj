@@ -583,8 +583,8 @@
 			isa = PBXGroup;
 			children = (
 				8A9FBAC528B86D5E003A94A1 /* CategoryViewController.swift */,
-				8A9FBAC428B86D5E003A94A1 /* CategoryViewModel.swift */,
 				8A9FBAC628B86D5E003A94A1 /* CategoryViewController.xib */,
+				8A9FBAC428B86D5E003A94A1 /* CategoryViewModel.swift */,
 				8A9FBAC728B86D5E003A94A1 /* CategoryCell */,
 			);
 			path = Category;

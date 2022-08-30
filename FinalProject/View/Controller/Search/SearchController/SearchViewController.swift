@@ -123,8 +123,10 @@ final class SearchViewController: UIViewController {
 
     // MARK: - IBActions
     @IBAction private func filterButtonTouchUpInside(_ sender: Any) {
+        guard let viewModel = viewModel else { return }
         let categoryVC = CategoryViewController()
         categoryVC.delegate = self
+        categoryVC.viewModel.selectFilter = viewModel.categoryId
         categoryVC.modalPresentationStyle = .fullScreen
         navigationController?.present(categoryVC, animated: true, completion: nil)
     }

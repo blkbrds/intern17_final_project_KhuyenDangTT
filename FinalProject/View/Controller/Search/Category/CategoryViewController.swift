@@ -77,6 +77,7 @@ extension CategoryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(CategoryCell.self, forIndexPath: indexPath)
         cell.viewModel = viewModel.viewModelForItem(at: indexPath)
+        cell.isSelect = viewModel.showSelect(at: indexPath)
         return cell
     }
 

@@ -28,6 +28,14 @@ final class CategoryViewModel {
         }
     }
 
+    func showSelect(at indexPath: IndexPath) -> Bool {
+        let category = categories[indexPath.row]
+        for id in selectFilter where category.id == id {
+            category.isSelected = true
+        }
+        return category.isSelected
+    }
+
     func numberOfItemInSection() -> Int {
         return categories.count
     }
