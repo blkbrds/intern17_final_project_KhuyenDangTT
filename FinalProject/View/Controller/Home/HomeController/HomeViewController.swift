@@ -28,7 +28,6 @@ final class HomeViewController: UIViewController {
 
     // MARK: - Properties
     var viewModel: HomeViewModel?
-    let locationManager = CLLocationManager()
 
     // MARK: - Life cycle
     override func viewDidLoad() {

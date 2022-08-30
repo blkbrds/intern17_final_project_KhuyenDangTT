@@ -16,7 +16,6 @@ final class MapViewController: UIViewController {
 
     // MARK: - Properties
     var viewModel: MapViewModel?
-    let locationManager = CLLocationManager()
 
     // MARK: - Life cycle
     override func viewDidLoad() {
