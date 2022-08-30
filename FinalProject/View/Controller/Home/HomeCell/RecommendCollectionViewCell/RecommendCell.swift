@@ -31,8 +31,8 @@ final class RecommendCell: UICollectionViewCell {
     // MARK: - Private func
     private func updateRecommandCell() {
         guard let viewModel = viewModel else { return }
-        nameLabel.text = viewModel.recommendVenue.venue?.name
-        addressLabel.text = viewModel.recommendVenue.venue?.location?.address
+        nameLabel.text = viewModel.recommendVenue.name
+        addressLabel.text = viewModel.recommendVenue.location?.address
         photoImageView.image = UIImage(named: viewModel.recommendVenue.image)
     }
 }

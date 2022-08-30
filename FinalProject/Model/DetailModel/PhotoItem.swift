@@ -8,6 +8,7 @@
 
 import ObjectMapper
 import RealmSwift
+
 final class PhotoItem: Object, Mappable {
 
     @objc dynamic var prefix: String = ""

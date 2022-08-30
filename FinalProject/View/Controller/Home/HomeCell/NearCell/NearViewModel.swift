@@ -11,10 +11,10 @@ import Foundation
 final class NearViewModel {
 
     // MARK: - Properties
-    private var nearVenues: [RecommendVenue] = []
+    private var nearVenues: [Venue] = []
 
     // MARK: - Init
-    init(nearVenues: [RecommendVenue]) {
+    init(nearVenues: [Venue]) {
         self.nearVenues = nearVenues
     }
 
@@ -28,6 +28,6 @@ final class NearViewModel {
     }
 
     func getIdNearVenue(at indexPath: IndexPath) -> String {
-        return nearVenues[indexPath.row].venue?.id ?? ""
+        return nearVenues[indexPath.row].id ?? ""
     }
 }

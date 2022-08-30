@@ -18,7 +18,7 @@ final class MapViewModel {
         return LocationManager.shared().currentLocation?.coordinate.longitude ?? 0.0
     }
     var venue: DetailVenue
-    
+
     init(venue: DetailVenue) {
         self.venue = venue
     }

@@ -11,10 +11,10 @@ import Foundation
 final class RecommendTableViewViewModel {
 
     // MARK: - Properties
-    private var recommendVenues: [RecommendVenue] = []
+    private var recommendVenues: [Venue] = []
 
     // MARK: - Init
-    init(recommendVenues: [RecommendVenue]) {
+    init(recommendVenues: [Venue]) {
         self.recommendVenues = recommendVenues
     }
 
@@ -26,8 +26,8 @@ final class RecommendTableViewViewModel {
     func viewModelForItem(at indexPath: IndexPath) -> RecommendViewModel {
         return RecommendViewModel(recommendVenue: recommendVenues[indexPath.row])
     }
-    
+
     func getIdRecommendVenue(at indexPath: IndexPath) -> String {
-        return recommendVenues[indexPath.row].venue?.id ?? ""
+        return recommendVenues[indexPath.row].id ?? ""
     }
 }

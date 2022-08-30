@@ -32,9 +32,9 @@ final class DetailViewController: UIViewController {
         title = "Detail"
         configUICollectionView()
         configTableView()
+        configUI()
         setupDataDetail()
         setupDataSimilarVenue()
-        configUI()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -103,7 +103,6 @@ final class DetailViewController: UIViewController {
                 this.alert(msg: error.localizedDescription, handler: nil)
             }
         }
-        
     }
 
     private func configUICollectionView() {
@@ -118,7 +117,7 @@ final class DetailViewController: UIViewController {
         guard let viewModel = viewModel else { return }
         let image: UIImage? = viewModel.isFavorite() ? UIImage(named: Config.favoritedImage) : UIImage(named: Config.favoriteImage)
         favoriteButton.setImage(image, for: .normal)
-        tableView.layer.cornerRadius = 20
+        tableView.layer.cornerRadius = Config.cornerRadiusTableView
         tableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
 
@@ -135,7 +134,7 @@ final class DetailViewController: UIViewController {
         nameLabel.text = viewModel.detailVenue?.name
         ratingLabel.text = String(viewModel.detailVenue?.rating ?? 0) + Config.totalStar
         addressLabel.text = viewModel.showAddress()
-        priceLabel.text = "Price: " + String(viewModel.detailVenue?.price?.tier ?? 0) + (viewModel.detailVenue?.price?.currency ?? "")
+        priceLabel.text = Config.titleOfPrice + String(viewModel.detailVenue?.price?.tier ?? 0) + (viewModel.detailVenue?.price?.currency ?? "")
         likeLabel.text = viewModel.detailVenue?.like?.summary ?? ""
         for star in starImageView where star.tag > viewModel.numberOfRating() {
             star.image = UIImage(named: Config.starEmpty)
@@ -144,8 +143,9 @@ final class DetailViewController: UIViewController {
 
     // MARK: - IBActions
     @IBAction func seeMapButtonTouchUpInside(_ sender: UIButton) {
+        guard let viewModel = viewModel else { return }
         let mapVC = MapViewController()
-        guard let venue = viewModel?.detailVenue else { return }
+        guard let venue = viewModel.detailVenue else { return }
         mapVC.viewModel = MapViewModel(venue: venue)
         navigationController?.pushViewController(mapVC, animated: true)
     }
@@ -220,7 +220,7 @@ extension DetailViewController: UITableViewDelegate {
         backgroundView.backgroundColor = #colorLiteral(red: 0.3725490196, green: 0.5843137255, blue: 0.3647058824, alpha: 1).withAlphaComponent(0.8)
         headerView.addSubview(backgroundView)
         let headerLabel = UILabel(frame: CGRect(origin: CGPoint(x: Config.xLabel, y: Config.yHeader), size: CGSize(width: kScreenSize.width, height: Config.heightOfHeader)))
-        headerLabel.text = "Similar Venues"
+        headerLabel.text = Config.titleOfSection
         headerLabel.textColor = .white
         headerLabel.font = .systemFont(ofSize: Config.sizeOfLabelHeader)
         headerView.addSubview(headerLabel)
@@ -246,5 +246,8 @@ extension DetailViewController {
         static let yHeader: CGFloat = 0
         static let sizeOfLabelHeader: CGFloat = 22
         static let safeAreaInsets: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0.0
+        static let cornerRadiusTableView: CGFloat = 20
+        static let titleOfSection: String = "Similar Venues"
+        static let titleOfPrice: String = "Price: "
     }
 }

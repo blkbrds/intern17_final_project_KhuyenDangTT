@@ -67,7 +67,6 @@ extension SearchViewModel {
             let result = realm.objects(SearchVenue.self).first(where: { $0.id == searchVenue.id })
             return result != nil
         } catch {
-            print(error)
             return false
         }
     }
