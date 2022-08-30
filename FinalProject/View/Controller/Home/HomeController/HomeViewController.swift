@@ -28,7 +28,6 @@ final class HomeViewController: UIViewController {
 
     // MARK: - Properties
     var viewModel: HomeViewModel?
-    let locationManager = CLLocationManager()
 
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -142,6 +141,12 @@ final class HomeViewController: UIViewController {
         }
     }
 
+    private func showDetail(id: String) {
+        let detailVC = DetailViewController()
+        detailVC.viewModel = DetailViewModel(id: id)
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+
     // MARK: - IBActions
     @IBAction private func searchButtonTouchUpInside(_ sender: UIButton) {
         tabBarController?.selectedIndex = 1
@@ -205,9 +210,7 @@ extension HomeViewController: OpeningTableViewCellDelegate {
     func cell(_ cell: OpeningTableViewCell, needPerformAction action: OpeningTableViewCell.Action) {
         switch action {
         case .showDetail(let id):
-            let detailVC = DetailViewController()
-            detailVC.viewModel = DetailViewModel(id: id)
-            navigationController?.pushViewController(detailVC, animated: true)
+            showDetail(id: id)
         }
     }
 }
@@ -217,9 +220,7 @@ extension HomeViewController: RecommendTableViewCellDelegate {
     func cell(_ cell: RecommendTableViewCell, needPerformAction action: RecommendTableViewCell.Action) {
         switch action {
         case .showDetail(let id):
-            let detailVC = DetailViewController()
-            detailVC.viewModel = DetailViewModel(id: id)
-            navigationController?.pushViewController(detailVC, animated: true)
+            showDetail(id: id)
         }
     }
 }
@@ -229,9 +230,7 @@ extension HomeViewController: NearTableViewCellDelegate {
     func cell(_ cell: NearTableViewCell, needPerformAction action: NearTableViewCell.Action) {
         switch action {
         case .showDetail(let id):
-            let detailVC = DetailViewController()
-            detailVC.viewModel = DetailViewModel(id: id)
-            navigationController?.pushViewController(detailVC, animated: true)
+            showDetail(id: id)
         }
     }
 }

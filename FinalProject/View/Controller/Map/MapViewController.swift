@@ -16,7 +16,6 @@ final class MapViewController: UIViewController {
 
     // MARK: - Properties
     var viewModel: MapViewModel?
-    let locationManager = CLLocationManager()
 
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -85,13 +84,6 @@ extension MapViewController: MKMapViewDelegate {
             renderer.strokeColor = UIColor.systemBlue
             renderer.lineWidth = 3
             return renderer
-        } else if let circle = overlay as? MKCircle {
-            let circleRenderer = MKCircleRenderer(circle: circle)
-            circleRenderer.fillColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-            circleRenderer.strokeColor = .blue
-            circleRenderer.lineWidth = 1
-            circleRenderer.lineDashPhase = 10
-            return circleRenderer
         } else {
             return MKOverlayRenderer()
         }

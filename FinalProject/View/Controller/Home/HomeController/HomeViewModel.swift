@@ -50,7 +50,7 @@ final class HomeViewModel {
         if type == .openning {
             guard openningVenues.count != 0 else { return 0 }
             let height = OpeningTableViewCell.Config.heightOfItem
-            let numberRow: Int = Int(openningVenues.count / 2)
+            let numberRow: Int = openningVenues.count % 2 == 0 ? openningVenues.count / 2 : Int(openningVenues.count / 2) + 1
             let heightCell = Float(numberRow) * Float(height)
             let heightSpaceBetweenCells = Float(numberRow - 1) * Float(OpeningTableViewCell.Config.minimumLineSpacingForSection)
             return heightCell + heightSpaceBetweenCells + Config.heightOfTitle + Float(OpeningTableViewCell.Config.topContenInset) + Float(OpeningTableViewCell.Config.bottomContenInset)
