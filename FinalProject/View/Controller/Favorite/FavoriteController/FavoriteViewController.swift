@@ -59,6 +59,7 @@ final class FavoriteViewController: UIViewController {
     private func configUI() {
         title = "Your Favorites"
     }
+    
     private func configFavoriteTableViewCell() {
         tableView.register(FavoriteCell.self)
         tableView.delegate = self

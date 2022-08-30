@@ -26,9 +26,9 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Search"
-        getHistoryVenue()
         configSearchTableViewCell()
         configSearchBar()
+        getHistoryVenue()
     }
 
     override func viewWillAppear(_ animated: Bool) {
