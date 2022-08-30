@@ -20,7 +20,6 @@ final class SearchViewController: UIViewController {
 
     // MARK: - Properties
     var viewModel: SearchViewModel?
-    var isSearch: Bool = false
 
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -86,7 +85,6 @@ final class SearchViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    this.isSearch = true
                     this.updateUI()
                 case .failure(let error):
                     this.alert(msg: error.localizedDescription, handler: nil)
@@ -180,10 +178,8 @@ extension SearchViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard searchText.isNotEmpty else {
-            guard isSearch else { return }
             getHistoryVenue()
             widthFilterButtonConstraint.constant = 0
-            isSearch = false
             return
         }
     }
@@ -204,8 +200,8 @@ extension SearchViewController: CategoryViewControllerDelegate {
     func controller(_ controller: CategoryViewController, needPerformAction action: CategoryViewController.Action) {
         switch action {
         case .passFilter(let selectFilter):
-            guard selectFilter.isNotEmpty else { return }
             guard let viewModel = viewModel else { return }
+            if viewModel.categoryId.isEmpty && selectFilter.isEmpty { return }
             viewModel.categoryId = selectFilter
             viewModel.query = searchBar.text ?? ""
             search()
